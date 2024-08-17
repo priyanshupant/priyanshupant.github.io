@@ -21,7 +21,7 @@ repository               : "academicpages/priyanshupant.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.jpeg"
+  avatar           : "profile.png"
   name             : "Priyanshu Pant"
   pronouns         : # example: "he/him"  
   bio              : "A seeking mathematician"
