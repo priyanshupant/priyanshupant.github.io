@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="Interactive graph theory demo with a visible SVG graph even if JavaScript is disabled." name="description"/>
+<title>A graph experiment — Priyanshu Pant</title>
+<style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 46px 26px 85px;
+      background: #fff;
+      color: #202020;
+      font: 16px/1.55 Arial, Helvetica, sans-serif;
+    }
+    a { color: #164c91; }
+    h1 { font-size: 24px; font-weight: 500; letter-spacing: -.4px; margin: 0 0 8px; }
+    p { margin: 0 0 14px; }
+    .lead { max-width: 540px; font-size: 15px; color: #535353; }
+    .experiment {
+      border-top: 1px solid #303030;
+      border-bottom: 1px solid #dedede;
+      padding: 26px 0 25px;
+      margin: 30px 0 12px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 235px;
+      gap: 32px;
+      align-items: center;
+    }
+    svg { display: block; width: 100%; max-width: 440px; height: auto; overflow: visible; }
+    .edge { fill: none; stroke: #4b4b4b; stroke-width: 1.55; stroke-linecap: round; }
+    .vertex { fill: white; stroke: #252525; stroke-width: 1.9; }
+    .vertex-label { font: 13px Arial, Helvetica, sans-serif; fill: #555; text-anchor: middle; }
+    .control-label { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: 15px; }
+    #edge-value { font-weight: 600; font-variant-numeric: tabular-nums; }
+    input[type="range"] { display: block; width: 100%; margin: 16px 0 24px; accent-color: #272727; cursor: pointer; }
+    .measure { border-top: 1px solid #e5e5e5; display: flex; justify-content: space-between; gap: 10px; padding: 10px 0; font-size: 14px; }
+    .measure strong { font-weight: 600; font-variant-numeric: tabular-nums; }
+    .measure span { color: #505050; }
+    .note { font-size: 13px; color: #666; line-height: 1.55; max-width: 620px; }
+    .hint { font-size: 13px; color: #666; }
+    @media (max-width: 660px) {
+      body { padding: 25px 20px 65px; }
+      .experiment { grid-template-columns: 1fr; gap: 14px; padding: 20px 0 18px; }
+      .graph-area { max-width: 390px; margin: 0 auto; width: 100%; }
+      .controls { max-width: 440px; width: 100%; margin: 0 auto; }
+    }
+  
+    noscript {display:block;color:#555;font-size:13px;margin:8px 0 20px;}
+</style>
+</head>
+<body>
+<main>
+<h1>A little graph experiment</h1>
+<p class="lead">Start with eight isolated vertices. Move the slider to add edges, one at a time.</p>
+<div class="experiment">
+<div class="graph-area">
+<svg aria-labelledby="graph-title graph-desc" id="graph" role="img" viewbox="0 0 440 350">
+<title id="graph-title">An undirected graph with eight vertices</title>
+<desc id="graph-desc">Use the slider to add edges.</desc>
+<g id="edges"><path class="edge" d="M 225.44 50.93 Q 265.64 64.87 304.56 82.07"></path><path class="edge" d="M 316.34 91.72 Q 339.97 125.05 360.66 160.28"></path><path class="edge" d="M 361.70 174.29 Q 345.09 215.22 325.30 254.71"></path><path class="edge" d="M 314.57 264.96 Q 268.65 285.13 221.43 302.04"></path><path class="edge" d="M 206.55 302.08 Q 164.86 287.63 124.45 269.92"></path><path class="edge" d="M 113.00 260.07 Q 89.48 222.88 69.00 183.93"></path><path class="edge" d="M 68.84 169.98 Q 86.96 133.16 108.16 98.02"></path></g>
+<g id="vertices"><circle class="vertex" cx="218" cy="48" r="7.1"></circle><text class="vertex-label" x="218" y="31">1</text><circle class="vertex" cx="312" cy="85" r="7.1"></circle><text class="vertex-label" x="331" y="79">2</text><circle class="vertex" cx="365" cy="167" r="7.1"></circle><text class="vertex-label" x="388" y="174">3</text><circle class="vertex" cx="322" cy="262" r="7.1"></circle><text class="vertex-label" x="341" y="282">4</text><circle class="vertex" cx="214" cy="305" r="7.1"></circle><text class="vertex-label" x="214" y="335">5</text><circle class="vertex" cx="117" cy="267" r="7.1"></circle><text class="vertex-label" x="99" y="290">6</text><circle class="vertex" cx="65" cy="177" r="7.1"></circle><text class="vertex-label" x="41" y="184">7</text><circle class="vertex" cx="112" cy="91" r="7.1"></circle><text class="vertex-label" x="94" y="85">8</text></g>
+</svg>
+</div>
+<div class="controls">
+<label class="control-label" for="edge-slider"><span>Number of edges</span><output for="edge-slider" id="edge-value">7</output></label>
+<input aria-describedby="slider-hint" id="edge-slider" max="14" min="0" step="1" type="range" value="7"/>
+<div class="hint" id="slider-hint">Drag or use the arrow keys.</div>
+<div style="margin-top: 20px">
+<div class="measure"><span>Vertices</span><strong id="vertices-count">8</strong></div>
+<div class="measure"><span>Connected components</span><strong id="component-count">1</strong></div>
+<div class="measure"><span>Independent cycles</span><strong id="cycle-count">0</strong></div>
+</div>
+</div>
+</div><noscript>The graph is shown with seven edges. Open this page in Safari, Chrome, or another full browser to move the slider.</noscript>
+<p class="note">For an undirected graph, the dimension of the cycle space is <em>m − n + c</em>, where <em>n</em> is the number of vertices, <em>m</em> is the number of edges, and <em>c</em> is the number of connected components.</p>
+<p class="note">Made with ordinary HTML, SVG and a few lines of JavaScript. No external libraries.</p>
+</main>
+<script>
+    (() => {
+      const ns = 'http://www.w3.org/2000/svg';
+      const points = [
+        [218, 48], [312, 85], [365, 167], [322, 262],
+        [214, 305], [117, 267], [65, 177], [112, 91]
+      ];
+      // First a path, then the closing edge, then a selection of chords.
+      const edgeOrder = [
+        [0,1], [1,2], [2,3], [3,4], [4,5], [5,6], [6,7],
+        [7,0], [0,4], [1,5], [2,6], [3,7], [0,3], [1,4]
+      ];
+      const edges = document.getElementById('edges');
+      const vertices = document.getElementById('vertices');
+      const slider = document.getElementById('edge-slider');
+      const value = document.getElementById('edge-value');
+      const componentsLabel = document.getElementById('component-count');
+      const cyclesLabel = document.getElementById('cycle-count');
+      const graphDesc = document.getElementById('graph-desc');
+
+      function element(type, attrs, parent) {
+        const el = document.createElementNS(ns, type);
+        for (const [name, val] of Object.entries(attrs)) el.setAttribute(name, val);
+        parent.appendChild(el);
+        return el;
+      }
+      function drawEdge(i, j) {
+        const [x1,y1] = points[i], [x2,y2] = points[j];
+        const dx = x2 - x1, dy = y2 - y1;
+        const length = Math.hypot(dx,dy);
+        const ux = dx / length, uy = dy / length;
+        const a = [x1+ux*8,y1+uy*8], b = [x2-ux*8,y2-uy*8];
+        // An extremely slight unevenness, like a line drawn with a stylus.
+        const bend = (i*7+j*3)%2 === 0 ? 1.75 : -1.75;
+        const cx = (a[0]+b[0])/2 - uy*bend;
+        const cy = (a[1]+b[1])/2 + ux*bend;
+        element('path', {
+          d: `M ${a[0].toFixed(2)} ${a[1].toFixed(2)} Q ${cx.toFixed(2)} ${cy.toFixed(2)} ${b[0].toFixed(2)} ${b[1].toFixed(2)}`,
+          class: 'edge'
+        }, edges);
+      }
+      function countComponents(m) {
+        const parent = points.map((_,i)=>i);
+        const root = x => { while(parent[x]!==x) x=parent[x]=parent[parent[x]]; return x; };
+        for (let k=0;k<m;k++) {
+          const [u,v]=edgeOrder[k];
+          parent[root(u)] = root(v);
+        }
+        return new Set(parent.map((_,i)=>root(i))).size;
+      }
+      function update() {
+        const m = Number(slider.value);
+        while (edges.firstChild) edges.removeChild(edges.firstChild);
+        edgeOrder.slice(0,m).forEach(([i,j])=>drawEdge(i,j));
+        const c = countComponents(m);
+        const beta = m - points.length + c;
+        value.textContent = String(m);
+        componentsLabel.textContent = String(c);
+        cyclesLabel.textContent = String(beta);
+        graphDesc.textContent = `Graph with 8 vertices, ${m} edges, ${c} connected components and ${beta} independent cycles.`;
+      }
+      slider.addEventListener('input',update);
+      update();
+    })();
+  </script>
+</body>
+</html>
