@@ -1,6 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+/* Quiet academic pages: typography and rules inspired by the Continuum essay. */
+:root{color-scheme:light;--ink:#171717;--muted:#595959;--line:#d5d5d5;--wide:1050px;--reading:760px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--ink);font:18px/1.76 Georgia,"Times New Roman",serif}
+a{color:inherit;text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{text-decoration-style:dashed}
+a:focus-visible{outline:2px dashed var(--ink);outline-offset:4px}
+.site-header{max-width:var(--wide);margin:auto;padding:22px 28px;border-bottom:1px solid var(--ink);display:flex;align-items:center;justify-content:space-between;gap:15px 35px}
+.site-header .site-name{margin:0;white-space:nowrap;font-size:21px;letter-spacing:-.045em;line-height:1.2}
+.site-name a{text-decoration:none}
+.site-name a:hover{text-decoration:underline}
+.site-header nav p{display:flex;flex-wrap:wrap;align-items:center;gap:7px 19px;margin:0}
+.site-header nav a{text-decoration:none;font:11px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.045em;text-transform:uppercase;color:#484848;padding:5px 0;border-bottom:1px solid transparent}
+.site-header nav a:hover{color:var(--ink);border-bottom-color:#888}
+.site-header nav a[aria-current="page"]{color:#111;border-bottom-color:#111;font-weight:700}
+main{max-width:var(--reading);padding:80px 24px 104px;margin:0 auto;min-height:62vh}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.045em}
+h1{font-size:clamp(2.75rem,5.5vw,4.25rem);line-height:1.09;margin:0 0 34px}
+h2{font-size:clamp(1.75rem,3.2vw,2.2rem);line-height:1.23;margin:65px 0 24px;padding-top:24px;border-top:1px solid var(--ink)}
+h3{font-size:1.45rem;line-height:1.4}
+p{margin:0 0 1.32em}
+main p{max-width:67ch}
+ul{padding:0;list-style:none;margin:26px 0 39px}
+li{border-top:1px solid var(--line);padding:19px 0 20px;margin:0}
+li:last-child{border-bottom:1px solid var(--line)}
+li strong{font:600 13px/1.75 ui-monospace,SFMono-Regular,Consolas,monospace}
+.page-publications>p:first-child{font:12px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--muted);margin-bottom:27px}
+.page-publications ul li{padding:24px 0 26px}
+.page-activities h1:not(:first-child){font-size:clamp(2rem,4vw,3rem);border-top:2px solid var(--ink);margin:78px 0 27px;padding-top:34px}
+.page-activities li{padding:15px 0 17px}
+.page-notes h2{margin-top:48px}
+.page-personal h3{font:12px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.055em;color:var(--muted);margin:0 0 33px}
+.page-personal img{display:block;width:min(100%,430px);max-height:520px;height:auto;object-fit:contain;margin:0}
+.page-personal h1{margin:41px 0 0}
+.page-contact h1{max-width:800px}
+.page-home{max-width:875px}
+.page-home .home-title{font-size:clamp(3.3rem,7.5vw,6.3rem);letter-spacing:-.07em;margin:0 0 56px}
+.home-intro{display:grid;grid-template-columns:minmax(0,1fr) 238px;gap:42px;align-items:start;margin-bottom:61px;padding-bottom:56px;border-bottom:1px solid var(--ink)}
+.home-intro .portrait{margin:0}
+.home-intro .portrait img{display:block;width:100%;height:auto}
+.home-intro h2{margin:0 0 21px;padding:0;border:0;font-size:clamp(2.1rem,3.9vw,2.75rem)}
+.home-intro p{font-size:18px}
+.page-home>h2:first-of-type{margin-top:0}
+.page-home h2{margin-top:55px}
+.page-home ul li{padding:15px 0}
+@media(max-width:760px){
+ body{font-size:17px;line-height:1.68}
+ .site-header{padding:20px 18px;align-items:flex-start;flex-direction:column;gap:14px}
+ .site-header nav p{gap:6px 16px}
+ main{padding:54px 19px 80px}
+ h1{margin-bottom:27px}
+ h2{margin-top:49px}
+ .page-home .home-title{margin-bottom:39px}
+ .home-intro{grid-template-columns:minmax(0,1fr) 165px;gap:25px;padding-bottom:36px;margin-bottom:43px}
+ .home-intro p{font-size:17px}
+}
+@media(max-width:520px){
+ .home-intro{display:flex;flex-direction:column;gap:26px}
+ .home-intro .portrait{order:-1;width:190px;max-width:75%}
+ .home-intro h2{font-size:2rem}
+ .page-home .home-title{font-size:clamp(3.1rem,12vw,4.1rem);margin-bottom:32px}
+ .site-header nav p{gap:5px 12px}
+ .site-header nav a{font-size:10.5px}
+ .page-personal img{max-width:100%}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{
+ body{font-size:12pt}
+ .site-header{padding:8px 0}
+ .site-header nav{display:none}
+ main{padding:20px 0}
+ h1,h2{break-after:avoid}
+ li{break-inside:avoid}
+}
+</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Personal academic webpage of Priyanshu Pant">
@@ -9,14 +86,18 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 </head>
 <body>
-<header>
-<p><a href="index.html">Priyanshu Pant</a></p>
+<header class="site-header">
+<p class="site-name"><a href="index.html">Priyanshu Pant</a></p>
 <nav aria-label="Main navigation">
-<p><a href="index.html">Home</a> | <a href="publications.html">Publications</a> | <a href="activities.html">Activities</a> | <a href="notes.html" aria-current="page">Notes</a> | <a href="personal.html">Personal</a> | <a href="contact.html">Contact</a></p>
+<p><a href="index.html">Home</a>
+<a href="publications.html">Publications</a>
+<a href="activities.html">Activities</a>
+<a href="notes.html" aria-current="page">Notes</a>
+<a href="personal.html">Personal</a>
+<a href="contact.html">Contact</a></p>
 </nav>
 </header>
-<hr>
-<main>
+<main class="page-notes">
 <h1>Notes &amp; Ideas</h1>
 <h2>Visualizing Finite Groups</h2>
 <p>A small Python project exploring Cayley tables and structural patterns in finite groups. <a href="https://github.com/priyanshupant/group-theory-python">[Read More]</a></p>
