@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+/* Google Sites-like personal academic webpage. */
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: white; color: #252525; font: 17px/1.82 Georgia,"Times New Roman",serif; }
+a { color: #397be4; text-decoration: none; }
+a:hover { text-decoration: underline; }
+a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
+.topbar {
+  height: 48px; padding: 0 22px; background: #050505; color: #f6f6f6;
+  display: flex; align-items: center; gap: 22px; width: 100%;
+  font-family: Arial,Helvetica,sans-serif;
+}
+.topbar .site-name { color: white; font: 18px/1.3 Arial,Helvetica,sans-serif; white-space: nowrap; }
+.topbar nav { display: flex; align-items: center; gap: 27px; margin-left: auto; }
+.topbar nav a { color: #e7e7e7; text-decoration: none; font: 14px/1.3 Arial,Helvetica,sans-serif; white-space: nowrap; }
+.topbar nav a:hover,.topbar nav a[aria-current="page"] { color: #fff; }
+.topbar .site-search { color: #eee; display: inline-flex; align-items: center; justify-content: center; margin-left: 4px; }
+.topbar .site-search svg { width: 19px; height: 19px; }
+.home-layout {
+  width: min(1160px,calc(100% - 52px)); margin: 24px auto 75px;
+  display: grid; grid-template-columns: 267px minmax(0,1fr); column-gap: 135px; align-items: start;
+}
+.home-side { min-width: 0; }
+.visitor-counter { margin-top: 28px; }
+.visitor-counter img { display: block; max-width: 100%; height: auto; }
+.home-side .portrait { display: block; width: 267px; height: 319px; max-width: 100%; object-fit: cover; object-position: center 38%; }
+.home-main { padding-top: 26px; }
+main { min-width: 0; }
+h1,h2,h3 { font-family: Georgia,"Times New Roman",serif; }
+h1 { font-size: 23px; line-height: 1.35; margin: 0 0 18px; }
+h2 { font-size: 19px; line-height: 1.4; margin: 0 0 10px; }
+h2:not(:first-child) { margin-top: 25px; }
+h3 { font-size: 18px; }
+p { margin: 0 0 10px; }
+ul { margin: 12px 0 26px; padding-left: 38px; }
+li { margin: 0 0 9px; }
+.page-main { max-width: 1120px; width: calc(100% - 92px); margin: 52px auto 90px; }
+.page-main h1:not(:first-child) { margin-top: 35px; }
+.page-publications li { margin-bottom: 22px; }
+.page-personal img { max-width: 100%; height: auto; }
+@media (max-width: 1260px) {
+  .home-layout { column-gap: clamp(45px,9vw,135px); }
+}
+@media (max-width: 850px) {
+  .home-layout { grid-template-columns: 220px minmax(0,1fr); column-gap: 38px; }
+  .home-side .portrait { width: 220px; height: 275px; }
+  .topbar nav { gap: 15px; }
+  .topbar nav a { font-size: 13px; }
+}
+@media (max-width: 660px) {
+  body { font-size: 16px; line-height: 1.67; }
+  .topbar { height: auto; min-height: 48px; padding: 12px 16px; flex-wrap: wrap; gap: 10px 20px; }
+  .topbar .site-name { font-size: 17px; }
+  .topbar nav { order: 2; width: 100%; margin: 0; flex-wrap: wrap; gap: 9px 15px; }
+  .topbar .site-search { margin-left: auto; }
+  .home-layout { display: block; width: auto; margin: 23px 19px 65px; }
+  .home-side .portrait { width: min(267px,100%); height: auto; aspect-ratio: 267/319; object-fit: cover; }
+  .home-main { padding-top: 25px; }
+  .page-main { width: auto; margin: 30px 19px 65px; }
+  h1 { font-size: 22px; }
+  h2 { font-size: 19px; }
+  ul { padding-left: 25px; }
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Personal academic webpage of Priyanshu Pant">
+<title>{{ page.title | escape }} — Priyanshu Pant</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+</head>
+<body>
+<header class="topbar">
+<a class="site-name" href="index.html">Priyanshu Pant</a>
+<nav aria-label="Main navigation">
+<a href="index.html"{% if page.page_key == 'home' %} aria-current="page"{% endif %}>Home</a>
+<a href="publications.html"{% if page.page_key == 'publications' %} aria-current="page"{% endif %}>Publications</a>
+<a href="activities.html"{% if page.page_key == 'activities' %} aria-current="page"{% endif %}>Activities</a>
+<a href="notes.html"{% if page.page_key == 'notes' %} aria-current="page"{% endif %}>Notes</a>
+<a href="personal.html"{% if page.page_key == 'personal' %} aria-current="page"{% endif %}>Personal</a>
+<a href="contact.html"{% if page.page_key == 'contact' %} aria-current="page"{% endif %}>Contact</a>
+</nav>
+<a class="site-search" aria-label="Search this site" href="https://www.google.com/search?q=site%3Apriyanshupant.github.io">
+<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="m15.4 15.4 5.1 5.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+</a>
+</header>
+{% if page.page_key == 'home' %}
+<div class="home-layout">
+<aside class="home-side">
+<img class="portrait" src="portrait.jpg" alt="Priyanshu Pant">
+<div class="visitor-counter">
+<a href="https://info.flagcounter.com/mvlt">
+  <img src="https://s01.flagcounter.com/count2/mvlt/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_8/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0">
+</a>
+</div>
+</aside>
+<main class="home-main">
+{{ content }}
+</main>
+</div>
+{% else %}
+<main class="page-main page-{{ page.page_key }}">
+{{ content }}
+</main>
+{% endif %}
+</body>
+</html>

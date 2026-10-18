@@ -1,0 +1,138 @@
+# Pages CMS: edit this site's content in the rich-text editor.
+media:
+  input: media
+  output: /media
+
+content:
+  - name: home
+    label: Home
+    type: file
+    path: index.html
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        label: Page title
+        type: string
+        readonly: true
+      - name: layout
+        type: string
+        hidden: true
+      - name: page_key
+        type: string
+        hidden: true
+      - name: body
+        label: Page content
+        type: rich-text
+        description: Edit text, headings, links, and lists. The site layout stays unchanged.
+        options:
+          format: html
+  - name: publications
+    label: Publications
+    type: file
+    path: publications.html
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        label: Page title
+        type: string
+        readonly: true
+      - name: layout
+        type: string
+        hidden: true
+      - name: page_key
+        type: string
+        hidden: true
+      - name: body
+        label: Page content
+        type: rich-text
+        description: Edit text, headings, links, and lists. The site layout stays unchanged.
+        options:
+          format: html
+  - name: activities
+    label: Activities
+    type: file
+    path: activities.html
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        label: Page title
+        type: string
+        readonly: true
+      - name: layout
+        type: string
+        hidden: true
+      - name: page_key
+        type: string
+        hidden: true
+      - name: body
+        label: Page content
+        type: rich-text
+        description: Edit text, headings, links, and lists. The site layout stays unchanged.
+        options:
+          format: html
+  - name: notes
+    label: Notes
+    type: file
+    path: notes.html
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        label: Page title
+        type: string
+        readonly: true
+      - name: layout
+        type: string
+        hidden: true
+      - name: page_key
+        type: string
+        hidden: true
+      - name: body
+        label: Page content
+        type: rich-text
+        description: Edit text, headings, links, and lists. The site layout stays unchanged.
+        options:
+          format: html
+  - name: personal
+    label: Personal
+    type: file
+    path: personal.html
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        label: Page title
+        type: string
+        readonly: true
+      - name: layout
+        type: string
+        hidden: true
+      - name: page_key
+        type: string
+        hidden: true
+      - name: body
+        label: Page content
+        type: rich-text
+        description: Edit text, headings, links, and lists. The site layout stays unchanged.
+        options:
+          format: html
+  - name: contact
+    label: Contact
+    type: file
+    path: contact.html
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        label: Page title
+        type: string
+        readonly: true
+      - name: layout
+        type: string
+        hidden: true
+      - name: page_key
+        type: string
+        hidden: true
+      - name: body
+        label: Page content
+        type: rich-text
+        description: Edit text, headings, links, and lists. The site layout stays unchanged.
+        options:
+          format: html
