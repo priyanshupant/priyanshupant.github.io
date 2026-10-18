@@ -25,6 +25,8 @@ a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
   display: grid; grid-template-columns: 267px minmax(0,1fr); column-gap: 135px; align-items: start;
 }
 .home-side { min-width: 0; }
+.visitor-counter { margin-top: 28px; }
+.visitor-counter img { display: block; max-width: 100%; height: auto; }
 .home-side .portrait { display: block; width: 267px; height: 319px; max-width: 100%; object-fit: cover; object-position: center 38%; }
 .home-main { padding-top: 26px; }
 main { min-width: 0; }
@@ -87,7 +89,14 @@ li { margin: 0 0 9px; }
 </a>
 </header>
 <div class="home-layout">
-<aside class="home-side"><img class="portrait" src="portrait.jpg" alt="Priyanshu Pant"></aside>
+<aside class="home-side">
+<img class="portrait" src="portrait.jpg" alt="Priyanshu Pant">
+<div class="visitor-counter">
+<a href="https://info.flagcounter.com/mvlt">
+  <img src="https://s01.flagcounter.com/count2/mvlt/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_8/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0">
+</a>
+</div>
+</aside>
 <main class="home-main">
 <h2>About Me</h2>
 <p>I am currently (since January 2025) a Research Scholar in the Department of Computer Science &amp; Engineering at <a href="https://cse.iiti.ac.in/">IIT Indore</a>, under the guidance of <a href="https://ranveeriit.github.io/">Ranveer Singh</a> and <a href="https://sasanks-webpage.webflow.io/">Sasank Mouli</a>.</p>
