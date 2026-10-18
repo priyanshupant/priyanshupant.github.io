@@ -2,59 +2,66 @@
 <html lang="en">
 <head>
 <style>
-/* A simple Google Sites-like academic layout. */
+/* Google Sites-like personal academic webpage. */
 * { box-sizing: border-box; }
-body {
-  margin: 0;
-  color: #222;
-  background: #fff;
-  font: 17px/1.65 Georgia, "Times New Roman", serif;
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: white; color: #252525; font: 17px/1.82 Georgia,"Times New Roman",serif; }
+a { color: #397be4; text-decoration: none; }
+a:hover { text-decoration: underline; }
+a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
+.topbar {
+  height: 48px; padding: 0 22px; background: #050505; color: #f6f6f6;
+  display: flex; align-items: center; gap: 22px; width: 100%;
+  font-family: Arial,Helvetica,sans-serif;
 }
-.site { max-width: 930px; margin: 0 auto; padding: 0 24px 70px; }
-.site-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px 30px;
-  min-height: 56px;
-  background: #171717;
-  padding: 12px 19px;
+.topbar .site-name { color: white; font: 18px/1.3 Arial,Helvetica,sans-serif; white-space: nowrap; }
+.topbar nav { display: flex; align-items: center; gap: 27px; margin-left: auto; }
+.topbar nav a { color: #e7e7e7; text-decoration: none; font: 14px/1.3 Arial,Helvetica,sans-serif; white-space: nowrap; }
+.topbar nav a:hover,.topbar nav a[aria-current="page"] { color: #fff; }
+.topbar .site-search { color: #eee; display: inline-flex; align-items: center; justify-content: center; margin-left: 4px; }
+.topbar .site-search svg { width: 19px; height: 19px; }
+.home-layout {
+  width: min(1160px,calc(100% - 52px)); margin: 24px auto 75px;
+  display: grid; grid-template-columns: 267px minmax(0,1fr); column-gap: 135px; align-items: start;
 }
-.site-name { color: #eee; font-size: 18px; white-space: nowrap; }
-.site-name a { color: inherit; text-decoration: none; }
-.site-header nav { display: flex; flex-wrap: wrap; gap: 8px 22px; }
-.site-header nav a {
-  color: #c9c9c9;
-  font: 14px/1.4 Arial, Helvetica, sans-serif;
-  text-decoration: none;
-}
-.site-header nav a:hover, .site-header nav a[aria-current="page"] { color: white; }
-.site-header nav a[aria-current="page"] { font-weight: bold; }
-.hero { margin: 0; }
-.hero img { display: block; width: 100%; height: auto; }
-main { max-width: 845px; margin: 53px auto 0; padding: 0 12px; }
-h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; }
-h1 { font-size: 23px; margin: 0 0 20px; }
-h2 { font-size: 20px; margin: 36px 0 13px; }
-h2:first-child { margin-top: 0; }
+.home-side { min-width: 0; }
+.home-side .portrait { display: block; width: 267px; height: 319px; max-width: 100%; object-fit: cover; object-position: center 38%; }
+.home-main { padding-top: 26px; }
+main { min-width: 0; }
+h1,h2,h3 { font-family: Georgia,"Times New Roman",serif; }
+h1 { font-size: 23px; line-height: 1.35; margin: 0 0 18px; }
+h2 { font-size: 19px; line-height: 1.4; margin: 0 0 10px; }
+h2:not(:first-child) { margin-top: 25px; }
 h3 { font-size: 18px; }
-p { margin: 0 0 14px; }
-main a { color: #3778bf; }
-ul { margin: 10px 0 27px; padding-left: 27px; }
-li { margin-bottom: 12px; }
-.page-publications li { margin-bottom: 24px; }
-.page-activities h1:not(:first-child) { margin-top: 43px; }
-.page-personal img { display: block; max-width: 100%; height: auto; }
+p { margin: 0 0 10px; }
+ul { margin: 12px 0 26px; padding-left: 38px; }
+li { margin: 0 0 9px; }
+.page-main { max-width: 1120px; width: calc(100% - 92px); margin: 52px auto 90px; }
+.page-main h1:not(:first-child) { margin-top: 35px; }
+.page-publications li { margin-bottom: 22px; }
+.page-personal img { max-width: 100%; height: auto; }
+@media (max-width: 1260px) {
+  .home-layout { column-gap: clamp(45px,9vw,135px); }
+}
+@media (max-width: 850px) {
+  .home-layout { grid-template-columns: 220px minmax(0,1fr); column-gap: 38px; }
+  .home-side .portrait { width: 220px; height: 275px; }
+  .topbar nav { gap: 15px; }
+  .topbar nav a { font-size: 13px; }
+}
 @media (max-width: 660px) {
-  body { font-size: 16px; }
-  .site { padding: 0 14px 50px; }
-  .site-header { align-items: flex-start; flex-direction: column; padding: 13px 15px; gap: 11px; }
-  .site-name { font-size: 17px; }
-  .site-header nav { gap: 8px 15px; }
-  .site-header nav a { font-size: 13px; }
-  main { margin-top: 34px; padding: 0 3px; }
+  body { font-size: 16px; line-height: 1.67; }
+  .topbar { height: auto; min-height: 48px; padding: 12px 16px; flex-wrap: wrap; gap: 10px 20px; }
+  .topbar .site-name { font-size: 17px; }
+  .topbar nav { order: 2; width: 100%; margin: 0; flex-wrap: wrap; gap: 9px 15px; }
+  .topbar .site-search { margin-left: auto; }
+  .home-layout { display: block; width: auto; margin: 23px 19px 65px; }
+  .home-side .portrait { width: min(267px,100%); height: auto; aspect-ratio: 267/319; object-fit: cover; }
+  .home-main { padding-top: 25px; }
+  .page-main { width: auto; margin: 30px 19px 65px; }
   h1 { font-size: 22px; }
-  h2 { font-size: 19px; margin-top: 30px; }
+  h2 { font-size: 19px; }
+  ul { padding-left: 25px; }
 }
 </style>
 <meta charset="utf-8">
@@ -65,9 +72,8 @@ li { margin-bottom: 12px; }
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 </head>
 <body>
-<div class="site">
-<header class="site-header">
-<div class="site-name"><a href="index.html">Priyanshu Pant</a></div>
+<header class="topbar">
+<a class="site-name" href="index.html">Priyanshu Pant</a>
 <nav aria-label="Main navigation">
 <a href="index.html">Home</a>
 <a href="publications.html" aria-current="page">Publications</a>
@@ -76,8 +82,11 @@ li { margin-bottom: 12px; }
 <a href="personal.html">Personal</a>
 <a href="contact.html">Contact</a>
 </nav>
+<a class="site-search" aria-label="Search this site" href="https://www.google.com/search?q=site%3Apriyanshupant.github.io">
+<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="m15.4 15.4 5.1 5.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+</a>
 </header>
-<main class="page-publications">
+<main class="page-main page-publications">
 <p>Note: In all the papers below, authors are ordered alphabetically by last name</p>
 <h1>Some Selected Papers</h1>
 <ul>
@@ -91,6 +100,5 @@ Joint work with Surabhi Chakrabartty, Ranveer Singh.<br>
 Symposium on Theoretical Aspects of Computer Science (<a href="https://stacs2026.imag.fr/">STACS 2026</a>)</li>
 </ul>
 </main>
-</div>
 </body>
 </html>
