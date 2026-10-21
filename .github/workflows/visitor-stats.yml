@@ -1,6 +1,9 @@
 name: Snapshot visitor statistics
 
 on:
+  push:
+    paths:
+      - '.github/workflows/visitor-stats.yml'
   schedule:
     - cron: '17 1 * * *'
   workflow_dispatch:
