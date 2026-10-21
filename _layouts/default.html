@@ -63,6 +63,21 @@ li { margin: 0 0 9px; }
   h2 { font-size: 19px; }
   ul { padding-left: 25px; }
 }
+
+/* Compact visitor-country graph, at bottom-right of the homepage. */
+.historic-country-graph { width:345px; max-width:100%; margin:38px 0 0 auto; text-align:center; color:#252525; }
+.historic-country-graph .country-graph-heading { font:16px/1.35 Georgia,"Times New Roman",serif; }
+.historic-country-graph .country-graph-subtitle { margin-bottom:5px; font:11px/1.4 Arial,Helvetica,sans-serif; color:#777; }
+.historic-country-graph svg { display:block; width:100%; height:auto; overflow:visible; }
+.historic-country-graph .country-edge { fill:none; stroke:#777; stroke-width:1.45; stroke-linecap:round; }
+.historic-country-graph .country-proximity { stroke:#9aaabd; stroke-width:1.3; stroke-dasharray:2 5; }
+.historic-country-graph .country-node circle { fill:#fff; stroke:#777; stroke-width:1; }
+.historic-country-graph .country-flag { font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif; text-anchor:middle; dominant-baseline:central; }
+.historic-country-graph .country-count { font:11px/1 Arial,Helvetica,sans-serif; fill:#5c5c5c; text-anchor:middle; }
+.historic-country-graph .country-graph-footer { margin-top:4px; font:11px/1.5 Arial,Helvetica,sans-serif; color:#6a6a6a; }
+.historic-country-graph .country-graph-legend { font:10px/1.4 Arial,Helvetica,sans-serif; color:#8a8a8a; }
+@media(max-width:660px) { .historic-country-graph { width:min(320px,100%); margin-top:30px; } }
+
 </style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -89,6 +104,34 @@ li { margin: 0 0 9px; }
 </aside>
 <main class="home-main">
 {{ content }}
+<aside class="historic-country-graph" aria-label="Visitor graph showing historical country counts">
+<div class="country-graph-heading">Visitors</div>
+<div class="country-graph-subtitle">Historical visitors by country</div>
+<svg viewBox="0 0 350 346" role="img" aria-label="Nine country flags with weighted circles and verified Flag Counter visitor totals: India 165, United States 62, France 5, Brazil 3, and Netherlands, Belgium, Singapore, New Zealand, Germany one each. Solid lines connect neighbouring countries, dotted lines are geographic bridges.">
+<path class="country-edge" d="M164 34 Q123 60 98 99"/>
+<path class="country-edge" d="M164 34 Q184 63 195 100"/>
+<path class="country-edge" d="M164 34 Q244 55 276 100"/>
+<path class="country-edge country-proximity" d="M98 99 Q60 132 44 173"/>
+<path class="country-edge country-proximity" d="M44 173 Q37 215 59 252"/>
+<path class="country-edge country-proximity" d="M276 100 Q274 137 256 169"/>
+<path class="country-edge country-proximity" d="M256 169 Q273 203 258 238"/>
+<path class="country-edge country-proximity" d="M258 238 Q293 264 310 303"/>
+<g class="country-node" transform="translate(164 34)"><title>Belgium: 1 historical visitor</title><circle r="11.9"/><text class="country-flag" x="0" y="1" font-size="19">🇧🇪</text><text class="country-count" x="0" y="25.9">1</text></g>
+<g class="country-node" transform="translate(98 99)"><title>France: 5 historical visitors</title><circle r="13.0"/><text class="country-flag" x="0" y="1" font-size="19">🇫🇷</text><text class="country-count" x="0" y="27.0">5</text></g>
+<g class="country-node" transform="translate(195 100)"><title>Netherlands: 1 historical visitor</title><circle r="11.9"/><text class="country-flag" x="0" y="1" font-size="19">🇳🇱</text><text class="country-count" x="0" y="25.9">1</text></g>
+<g class="country-node" transform="translate(276 100)"><title>Germany: 1 historical visitor</title><circle r="11.9"/><text class="country-flag" x="0" y="1" font-size="19">🇩🇪</text><text class="country-count" x="0" y="25.9">1</text></g>
+<g class="country-node" transform="translate(44 173)"><title>United States: 62 historical visitors</title><circle r="18.0"/><text class="country-flag" x="0" y="1" font-size="23">🇺🇸</text><text class="country-count" x="0" y="32.0">62</text></g>
+<g class="country-node" transform="translate(59 252)"><title>Brazil: 3 historical visitors</title><circle r="12.5"/><text class="country-flag" x="0" y="1" font-size="19">🇧🇷</text><text class="country-count" x="0" y="26.5">3</text></g>
+<g class="country-node" transform="translate(256 169)"><title>India: 165 historical visitors</title><circle r="22.4"/><text class="country-flag" x="0" y="1" font-size="23">🇮🇳</text><text class="country-count" x="0" y="36.4">165</text></g>
+<g class="country-node" transform="translate(258 238)"><title>Singapore: 1 historical visitor</title><circle r="11.9"/><text class="country-flag" x="0" y="1" font-size="19">🇸🇬</text><text class="country-count" x="0" y="25.9">1</text></g>
+<g class="country-node" transform="translate(310 303)"><title>New Zealand: 1 historical visitor</title><circle r="11.9"/><text class="country-flag" x="0" y="1" font-size="19">🇳🇿</text><text class="country-count" x="0" y="25.9">1</text></g>
+</svg>
+<div class="country-graph-legend">━━ border &nbsp; ┄┄ proximity</div>
+<div class="country-graph-footer">
+<div id="historic-visit-total" title="Country weights show historical Flag Counter counts only. GoatCounter measures newer visits differently.">240 historical · <a href="https://priyanshupant.goatcounter.com/" target="_blank" rel="noopener noreferrer">newer visits ↗</a></div>
+<a href="https://info.flagcounter.com/mvlt" target="_blank" rel="noopener noreferrer">Historic source</a>
+</div>
+</aside>
 </main>
 </div>
 {% else %}
@@ -96,6 +139,21 @@ li { margin: 0 0 9px; }
 {{ content }}
 </main>
 {% endif %}
+<script>
+/* Combine summary totals only if public GoatCounter counts are enabled.
+   Country vertex weights remain historic; no private analytics API key is exposed. */
+(function() {
+  var target = document.getElementById('historic-visit-total');
+  if (!target || !window.fetch) return;
+  fetch('https://priyanshupant.goatcounter.com/counter/TOTAL.json')
+    .then(function(r) { if (!r.ok) throw new Error('Unavailable'); return r.json(); })
+    .then(function(data) {
+      var count = Number(String(data.count == null ? '' : data.count).replace(/[^0-9]/g, ''));
+      if (!Number.isSafeInteger(count) || count < 0) return;
+      target.textContent = '\u2248 ' + (240 + count).toLocaleString() + ' combined (240 historic + ' + count.toLocaleString() + ' new)';
+    }).catch(function() { /* Keep verified 240 historical total displayed. */ });
+})();
+</script>
 <script data-goatcounter="https://priyanshupant.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
