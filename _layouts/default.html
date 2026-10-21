@@ -11,13 +11,13 @@ a { color: #397be4; text-decoration: none; }
 a:hover { text-decoration: underline; }
 a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
 .topbar {
-  height: 72px; padding: 0 22px; background: #050505; color: #f6f6f6;
-  display: flex; align-items: center; gap: 22px; width: 100%;
+  height: 50px; padding: 0 18px; background: #050505; color: #f6f6f6;
+  display: flex; align-items: center; gap: 16px; width: 100%;
   font-family: "Lato",Arial,Helvetica,sans-serif; font-weight: 300;
 }
 .topbar .site-name { color: white; font: 300 27px/1.3 "Lato",Arial,Helvetica,sans-serif; white-space: nowrap; }
 .topbar .site-name:hover { text-decoration: none; }
-.topbar nav { display: flex; align-items: center; gap: 27px; margin-left: auto; }
+.topbar nav { display: flex; align-items: center; gap: 20px; margin-left: auto; }
 .topbar nav a { color: #e7e7e7; text-decoration: none; font: 300 21px/1.3 "Lato",Arial,Helvetica,sans-serif; white-space: nowrap; }
 .topbar nav a:hover,.topbar nav a[aria-current="page"] { color: #fff; }
 .home-layout {
@@ -53,9 +53,9 @@ li { margin: 0 0 9px; }
 }
 @media (max-width: 660px) {
   body { font-size: 16px; line-height: 1.67; }
-  .topbar { height: auto; min-height: 72px; padding: 16px 16px; flex-wrap: wrap; gap: 10px 20px; }
-  .topbar .site-name { font-size: 25.5px; }
-  .topbar nav { order: 2; width: 100%; margin: 0; flex-wrap: wrap; gap: 9px 15px; }
+  .topbar { height: auto; min-height: 50px; padding: 8px 16px; flex-wrap: wrap; gap: 6px 14px; }
+  .topbar .site-name { font-size: 23px; }
+  .topbar nav { order: 2; width: 100%; margin: 0; flex-wrap: wrap; gap: 6px 14px; }
   .home-layout { display: block; width: auto; margin: 23px 19px 65px; }
   .home-side .portrait { width: min(267px,100%); height: auto; aspect-ratio: 267/319; object-fit: cover; }
   .home-main { padding-top: 25px; }
