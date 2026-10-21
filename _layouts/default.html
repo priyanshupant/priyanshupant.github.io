@@ -75,19 +75,7 @@ li { margin: 0 0 9px; }
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Personal academic webpage of Priyanshu Pant">
 <title>{{ page.title | escape }}</title>
-{% if page.page_key == 'home' %}
-<link rel="icon" href="/favicon-home.svg?v=1" type="image/svg+xml">
-{% elsif page.page_key == 'publications' %}
-<link rel="icon" href="/favicon-papers.svg?v=1" type="image/svg+xml">
-{% elsif page.page_key == 'activities' %}
-<link rel="icon" href="/favicon-activities.svg?v=1" type="image/svg+xml">
-{% elsif page.page_key == 'notes' %}
-<link rel="icon" href="/favicon-notes.svg?v=1" type="image/svg+xml">
-{% elsif page.page_key == 'personal' %}
-<link rel="icon" href="/favicon-personal.svg?v=1" type="image/svg+xml">
-{% else %}
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-{% endif %}
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGBgAAAABQABpfZFQAAAAABJRU5ErkJggg==">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 </head>
 <body>
