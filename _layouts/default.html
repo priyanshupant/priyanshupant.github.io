@@ -45,12 +45,20 @@ li { margin: 0 0 9px; }
 .page-notes h1,.page-notes h2,.page-notes h3,
 .page-personal h1,.page-personal h2,.page-personal h3 { font-weight: 300; }
 .page-personal img { max-width: 100%; height: auto; border-radius: 10px; }
+.personal-columns { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px; align-items:start; margin-top:22px; }
+.personal-columns > section { min-width:0; }
+.personal-columns h2 { margin:0 0 14px; }
+.personal-art-gallery { display:flex; flex-wrap:wrap; align-items:flex-start; gap:18px; }
+.personal-meme-gallery { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; align-items:start; }
+.personal-meme-gallery a { display:block; min-width:0; }
+.personal-meme-gallery img { display:block; width:100%; height:auto; object-fit:contain; }
 .page-publications a { color: #c62828; }
 .page-publications li { margin-bottom: 22px; }
 @media (max-width: 1260px) {
   .home-layout { column-gap: clamp(45px,9vw,135px); }
 }
 @media (max-width: 850px) {
+  .personal-columns { grid-template-columns:1fr; gap:34px; }
   .home-layout { grid-template-columns: 220px minmax(0,1fr); column-gap: 38px; }
   .home-side .portrait { width: 220px; height: 275px; }
   .topbar nav { gap: 25px; }
