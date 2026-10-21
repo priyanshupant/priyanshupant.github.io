@@ -1,0 +1,20 @@
+{
+  "source": "Flag Counter",
+  "source_url": "https://info.flagcounter.com/mvlt",
+  "reference_date": "2026-10-21",
+  "scope": "homepage counter only",
+  "metric": "reported visitors by country (Flag Counter method)",
+  "total": 240,
+  "countries": {
+    "IN": 165,
+    "US": 62,
+    "FR": 5,
+    "BR": 3,
+    "NL": 1,
+    "BE": 1,
+    "SG": 1,
+    "NZ": 1,
+    "DE": 1
+  },
+  "note": "Historical snapshot from user-supplied Flag Counter screenshot. This is not deduplicated against GoatCounter statistics; do not describe their sum as unique people."
+}
