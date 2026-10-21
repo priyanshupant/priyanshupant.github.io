@@ -92,28 +92,7 @@ content:
         description: Edit text, headings, links, and lists. The site layout stays unchanged.
         options:
           format: html
-  - name: personal
-    label: Personal
-    type: file
-    path: personal.html
-    format: yaml-frontmatter
-    fields:
-      - name: title
-        label: Page title
-        type: string
-        readonly: true
-      - name: layout
-        type: string
-        hidden: true
-      - name: page_key
-        type: string
-        hidden: true
-      - name: body
-        label: Page content
-        type: rich-text
-        description: Edit text, headings, links, and lists. The site layout stays unchanged.
-        options:
-          format: html
+
   - name: contact
     label: Contact
     type: file
