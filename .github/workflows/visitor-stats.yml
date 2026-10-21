@@ -1,0 +1,60 @@
+name: Snapshot visitor statistics
+
+on:
+  schedule:
+    - cron: '17 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch public GoatCounter total
+        env:
+          GOATCOUNTER_URL: https://priyanshupant.goatcounter.com/counter/TOTAL.json
+        run: |
+          python3 - <<'PY'
+          import datetime
+          import json
+          import os
+          import re
+          import urllib.request
+
+          req = urllib.request.Request(
+              os.environ["GOATCOUNTER_URL"],
+              headers={"User-Agent": "visitor-stats-snapshot/1.0", "Accept": "application/json"},
+          )
+          with urllib.request.urlopen(req, timeout=30) as response:
+              result = json.load(response)
+          raw = result.get("count")
+          if not isinstance(raw, (str, int)) or not re.fullmatch(r"[0-9][0-9, ]*", str(raw)):
+              raise SystemExit("Unexpected GoatCounter count response; snapshot not updated")
+          newer = int(str(raw).replace(",", "").replace(" ", ""))
+          with open("_data/visitor_history.json", encoding="utf-8") as source:
+              historical = json.load(source)["total"]
+          output = {
+              "recorded_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
+              "source": os.environ["GOATCOUNTER_URL"],
+              "goatcounter_count": newer,
+              "flagcounter_historical": historical,
+              "approximate_combined_count": historical + newer,
+              "note": "Approximate sum of two services measuring traffic differently; not a deduplicated unique-visitor total."
+          }
+          with open("_data/visitor_snapshot.json", "w", encoding="utf-8") as target:
+              json.dump(output, target, indent=2, ensure_ascii=False)
+              target.write("\n")
+          PY
+      - name: Save snapshot if updated
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _data/visitor_snapshot.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Record hidden visitor statistics [skip ci]"
+          git push
