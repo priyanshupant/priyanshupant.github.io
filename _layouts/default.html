@@ -22,15 +22,16 @@ a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
 .topbar nav a:hover,.topbar nav a[aria-current="page"] { color: #fff; }
 
 /* The illustrative visitor tree is only shown on Home. */
-.visitor-tree { float:right; width:270px; max-width:48%; margin:0 0 20px 22px; text-align:center; }
+.visitor-tree { float:none; width:280px; max-width:100%; margin:32px 0 0 auto; text-align:center; }
 .visitor-tree .visitor-title { font:15px/1.3 Georgia,"Times New Roman",serif; margin:0 0 3px; }
 .visitor-tree svg { width:100%; height:auto; display:block; overflow:visible; }
 .visitor-tree .visitor-edge { fill:none; stroke:#737b82; stroke-width:1.35; stroke-linecap:round; }
 .visitor-tree .visitor-near { stroke:#89a4bc; stroke-dasharray:2 5; }
+.visitor-tree .visitor-count { font:11px/1.2 Arial,Helvetica,sans-serif; fill:#666; text-anchor:middle; }
 .visitor-tree .visitor-foot { font:10px/1.5 Arial,Helvetica,sans-serif; color:#777; }
 .visitor-counter-tracking { position:absolute; left:-9999px; top:0; width:1px; height:1px; overflow:hidden; opacity:0; pointer-events:none; }
-@media(max-width:850px) and (min-width:661px) { .visitor-tree {width:205px; margin-left:14px;} }
-@media(max-width:660px) { .visitor-tree {float:none; width:min(260px,100%); max-width:100%; margin:0 auto 18px;} }
+@media(max-width:850px) and (min-width:661px) { .visitor-tree { width:245px; } }
+@media(max-width:660px) { .visitor-tree { width:min(270px,100%); margin:25px 0 0 auto; } }
 
 .home-layout {
   width: min(1160px,calc(100% - 52px)); margin: 24px auto 75px;
@@ -106,24 +107,24 @@ li { margin: 0 0 9px; }
 </div>
 </aside>
 <main class="home-main">
-<aside class="visitor-tree" aria-label="Illustrative country visitor network">
-  <div class="visitor-title">Visitors</div>
-  <svg viewBox="0 0 280 243" role="img" aria-label="Illustrative tree-shaped network of country flags; solid lines represent land-border neighbours and dotted lines represent geographic proximity. Countries are examples, not verified traffic data.">
-    <path d="M139 40 Q94 62 76 100" class="visitor-edge visitor-near"/>
-<path d="M139 40 Q185 62 210 100" class="visitor-edge "/>
-<path d="M76 100 Q34 128 39 162" class="visitor-edge visitor-near"/>
-<path d="M210 100 Q202 130 191 162" class="visitor-edge visitor-near"/>
-<path d="M191 162 Q241 186 244 217" class="visitor-edge visitor-near"/>
-    <g transform="translate(139 40)"><title>France (example flag)</title><circle cx="0" cy="0" r="16.5" fill="#fff" stroke="#787e84" stroke-width="1"/><text x="0" y="6.5" font-size="23" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🇫🇷</text></g>
-<g transform="translate(76 100)"><title>United Kingdom (example flag)</title><circle cx="0" cy="0" r="16.5" fill="#fff" stroke="#787e84" stroke-width="1"/><text x="0" y="6.5" font-size="23" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🇬🇧</text></g>
-<g transform="translate(210 100)"><title>Germany (example flag)</title><circle cx="0" cy="0" r="16.5" fill="#fff" stroke="#787e84" stroke-width="1"/><text x="0" y="6.5" font-size="23" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🇩🇪</text></g>
-<g transform="translate(39 162)"><title>United States (example flag)</title><circle cx="0" cy="0" r="16.5" fill="#fff" stroke="#787e84" stroke-width="1"/><text x="0" y="6.5" font-size="23" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🇺🇸</text></g>
-<g transform="translate(191 162)"><title>India (example flag)</title><circle cx="0" cy="0" r="16.5" fill="#fff" stroke="#787e84" stroke-width="1"/><text x="0" y="6.5" font-size="23" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🇮🇳</text></g>
-<g transform="translate(244 217)"><title>Japan (example flag)</title><circle cx="0" cy="0" r="16.5" fill="#fff" stroke="#787e84" stroke-width="1"/><text x="0" y="6.5" font-size="23" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🇯🇵</text></g>
-  </svg>
-  <div class="visitor-foot">Example flags · <a href="https://info.flagcounter.com/mvlt" target="_blank" rel="noopener noreferrer">live statistics ↗</a></div>
-</aside>
 {{ content }}
+<aside class="visitor-tree" aria-label="Illustrative weighted country visitor network at the bottom-right of the homepage">
+  <div class="visitor-title">Visitors</div>
+  <svg viewBox="0 0 280 280" role="img" aria-label="Illustrative country tree. Country flags are vertices, larger vertices have larger sample visit counts. Solid edges link land-border neighbours and dotted edges link other nearby countries.">
+    <path d="M139 43 Q96 64 76 105" class="visitor-edge visitor-near"/>
+    <path d="M139 43 Q183 60 213 105" class="visitor-edge"/>
+    <path d="M76 105 Q39 137 38 176" class="visitor-edge visitor-near"/>
+    <path d="M213 105 Q208 146 191 176" class="visitor-edge visitor-near"/>
+    <path d="M191 176 Q237 207 245 244" class="visitor-edge visitor-near"/>
+    <g transform="translate(139 43)"><title>France: 75 example visits</title><circle r="16" fill="#fff" stroke="#787e84" stroke-width="1.1"/><text x="0" y="6" font-size="24" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🇫🇷</text><text class="visitor-count" x="0" y="30">75</text></g>
+    <g transform="translate(76 105)"><title>United Kingdom: 34 example visits</title><circle r="13" fill="#fff" stroke="#787e84" stroke-width="1.1"/><text x="0" y="6" font-size="20.8" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🇬🇧</text><text class="visitor-count" x="0" y="27">34</text></g>
+    <g transform="translate(213 105)"><title>Germany: 96 example visits</title><circle r="17" fill="#fff" stroke="#787e84" stroke-width="1.1"/><text x="0" y="6" font-size="24" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🇩🇪</text><text class="visitor-count" x="0" y="31">96</text></g>
+    <g transform="translate(38 176)"><title>United States: 180 example visits</title><circle r="20" fill="#fff" stroke="#787e84" stroke-width="1.1"/><text x="0" y="6" font-size="24" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🇺🇸</text><text class="visitor-count" x="0" y="34">180</text></g>
+    <g transform="translate(191 176)"><title>India: 482 example visits</title><circle r="27" fill="#fff" stroke="#787e84" stroke-width="1.1"/><text x="0" y="6" font-size="24" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🇮🇳</text><text class="visitor-count" x="0" y="41">482</text></g>
+    <g transform="translate(245 244)"><title>Japan: 42 example visits</title><circle r="14" fill="#fff" stroke="#787e84" stroke-width="1.1"/><text x="0" y="6" font-size="22.400000000000002" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🇯🇵</text><text class="visitor-count" x="0" y="28">42</text></g>
+  </svg>
+  <div class="visitor-foot">Sample counts · <a href="https://info.flagcounter.com/mvlt" target="_blank" rel="noopener noreferrer">Actual visitor statistics ↗</a></div>
+</aside>
 </main>
 </div>
 {% else %}
