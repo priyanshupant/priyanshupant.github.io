@@ -17,7 +17,7 @@ a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
 }
 .topbar .site-name { color: white; font: 300 27px/1.3 "Lato",Arial,Helvetica,sans-serif; white-space: nowrap; }
 .topbar .site-name:hover { text-decoration: none; }
-.topbar nav { display: flex; align-items: center; gap: 20px; margin-left: auto; }
+.topbar nav { display: flex; align-items: center; gap: 36px; margin-left: auto; }
 .topbar nav a { color: #e7e7e7; text-decoration: none; font: 300 21px/1.3 "Lato",Arial,Helvetica,sans-serif; white-space: nowrap; }
 .topbar nav a:hover,.topbar nav a[aria-current="page"] { color: #fff; }
 .home-layout {
@@ -48,14 +48,14 @@ li { margin: 0 0 9px; }
 @media (max-width: 850px) {
   .home-layout { grid-template-columns: 220px minmax(0,1fr); column-gap: 38px; }
   .home-side .portrait { width: 220px; height: 275px; }
-  .topbar nav { gap: 15px; }
+  .topbar nav { gap: 25px; }
   .topbar nav a { font-size: 19.5px; }
 }
 @media (max-width: 660px) {
   body { font-size: 16px; line-height: 1.67; }
   .topbar { height: auto; min-height: 50px; padding: 8px 16px; flex-wrap: wrap; gap: 6px 14px; }
   .topbar .site-name { font-size: 23px; }
-  .topbar nav { order: 2; width: 100%; margin: 0; flex-wrap: wrap; gap: 6px 14px; }
+  .topbar nav { order: 2; width: 100%; margin: 0; flex-wrap: wrap; gap: 8px 18px; }
   .home-layout { display: block; width: auto; margin: 23px 19px 65px; }
   .home-side .portrait { width: min(267px,100%); height: auto; aspect-ratio: 267/319; object-fit: cover; }
   .home-main { padding-top: 25px; }
