@@ -32,12 +32,21 @@ jobs:
               os.environ["GOATCOUNTER_URL"],
               headers={"User-Agent": "visitor-stats-snapshot/1.0", "Accept": "application/json"},
           )
+          checked = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+          status = {"checked_utc": checked, "source": os.environ["GOATCOUNTER_URL"]}
           try:
               with urllib.request.urlopen(req, timeout=30) as response:
                   result = json.load(response)
           except urllib.error.HTTPError as exc:
-              detail = exc.read(400).decode("utf-8", errors="replace").strip().replace("\\n", " ")
-              raise SystemExit("Public counter endpoint returned HTTP %s: %s" % (exc.code, detail))
+              import html
+              raw_error = exc.read(10000).decode("utf-8", errors="replace")
+              detail = html.unescape(re.sub(r"\\s+", " ", re.sub(r"<[^>]+>", " ", raw_error))).strip()
+              status.update({"state": "not_accessible", "http_status": exc.code, "message": detail[-450:]})
+              with open("_data/visitor_poll_status.json", "w", encoding="utf-8") as target:
+                  json.dump(status, target, indent=2)
+                  target.write("\\n")
+              print("Visitor counts unavailable over public API (HTTP %s): %s" % (exc.code, detail[-260:]))
+              raise SystemExit(0)
           raw = result.get("count")
           if not isinstance(raw, (str, int)) or not re.fullmatch(r"[0-9][0-9, ]*", str(raw)):
               raise SystemExit("Unexpected GoatCounter count response; snapshot not updated")
@@ -55,12 +64,16 @@ jobs:
           with open("_data/visitor_snapshot.json", "w", encoding="utf-8") as target:
               json.dump(output, target, indent=2, ensure_ascii=False)
               target.write("\n")
+          status.update({"state": "ok", "goatcounter_count": newer})
+          with open("_data/visitor_poll_status.json", "w", encoding="utf-8") as target:
+              json.dump(status, target, indent=2)
+              target.write("\n")
           PY
       - name: Save snapshot if updated
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add _data/visitor_snapshot.json
+          git add _data/visitor_snapshot.json _data/visitor_poll_status.json
           if git diff --cached --quiet; then
             exit 0
           fi
