@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M32 7L56 26" stroke="#131313" stroke-width="3.25"/>
+  <path d="M32 7L47 55" stroke="#131313" stroke-width="3.25"/>
+  <path d="M32 7L17 55" stroke="#131313" stroke-width="3.25"/>
+  <path d="M32 7L8 26" stroke="#131313" stroke-width="3.25"/>
+  <path d="M56 26L47 55" stroke="#131313" stroke-width="3.25"/>
+  <path d="M56 26L17 55" stroke="#131313" stroke-width="3.25"/>
+  <path d="M56 26L8 26" stroke="#131313" stroke-width="3.25"/>
+  <path d="M47 55L17 55" stroke="#131313" stroke-width="3.25"/>
+  <path d="M47 55L8 26" stroke="#131313" stroke-width="3.25"/>
+  <path d="M17 55L8 26" stroke="#131313" stroke-width="3.25"/>
+  <circle cx="32" cy="7" r="6.1" stroke="#111" stroke-width="2.7" fill="#fa4058"/>
+  <circle cx="56" cy="26" r="6.1" stroke="#111" stroke-width="2.7" fill="#fa4058"/>
+  <circle cx="47" cy="55" r="6.1" stroke="#111" stroke-width="2.7" fill="#fa4058"/>
+  <circle cx="17" cy="55" r="6.1" stroke="#111" stroke-width="2.7" fill="#fa4058"/>
+  <circle cx="8" cy="26" r="6.1" stroke="#111" stroke-width="2.7" fill="#fa4058"/>
+</svg>
