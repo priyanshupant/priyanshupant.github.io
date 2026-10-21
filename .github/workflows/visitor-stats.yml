@@ -26,13 +26,18 @@ jobs:
           import os
           import re
           import urllib.request
+          import urllib.error
 
           req = urllib.request.Request(
               os.environ["GOATCOUNTER_URL"],
               headers={"User-Agent": "visitor-stats-snapshot/1.0", "Accept": "application/json"},
           )
-          with urllib.request.urlopen(req, timeout=30) as response:
-              result = json.load(response)
+          try:
+              with urllib.request.urlopen(req, timeout=30) as response:
+                  result = json.load(response)
+          except urllib.error.HTTPError as exc:
+              detail = exc.read(400).decode("utf-8", errors="replace").strip().replace("\\n", " ")
+              raise SystemExit("Public counter endpoint returned HTTP %s: %s" % (exc.code, detail))
           raw = result.get("count")
           if not isinstance(raw, (str, int)) or not re.fullmatch(r"[0-9][0-9, ]*", str(raw)):
               raise SystemExit("Unexpected GoatCounter count response; snapshot not updated")
