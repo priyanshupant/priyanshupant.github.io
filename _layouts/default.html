@@ -74,7 +74,7 @@ li { margin: 0 0 9px; }
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Personal academic webpage of Priyanshu Pant">
-<title>&#8203;</title>
+<title>{{ page.title | escape }}</title>
 {% if page.page_key == 'home' %}
 <link rel="icon" href="/favicon-home.svg?v=1" type="image/svg+xml">
 {% elsif page.page_key == 'publications' %}
