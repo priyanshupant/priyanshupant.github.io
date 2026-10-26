@@ -12,14 +12,17 @@
   if (!document.getElementById("home-graph-particles") ||
       typeof window.particlesJS !== "function") return;
 
+  const smallScreen = window.matchMedia &&
+    window.matchMedia("(max-width: 660px)").matches;
+
   const reduceMotion = window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   window.particlesJS("home-graph-particles", {
     particles: {
       number: {
-        value: 145,
-        density: { enable: true, value_area: 800 }
+        value: smallScreen ? 65 : 112,
+        density: { enable: true, value_area: 1050 }
       },
       color: { value: "#393939" },
       shape: {
@@ -27,25 +30,25 @@
         stroke: { width: 0, color: "#393939" }
       },
       opacity: {
-        value: 0.57,
+        value: 0.38,
         random: false,
         anim: { enable: false }
       },
       size: {
-        value: 2.3,
+        value: 2.1,
         random: true,
         anim: { enable: false }
       },
       line_linked: {
         enable: true,
-        distance: 122,
-        color: "#444444",
-        opacity: 0.30,
+        distance: 134,
+        color: "#505050",
+        opacity: 0.19,
         width: 1
       },
       move: {
         enable: !reduceMotion,
-        speed: 0.8,
+        speed: 0.65,
         direction: "none",
         random: false,
         straight: false,
@@ -55,7 +58,7 @@
       }
     },
     interactivity: {
-      detect_on: "canvas",
+      detect_on: "window",
       events: {
         onhover: { enable: !reduceMotion, mode: "repulse" },
         onclick: { enable: false, mode: "push" },
