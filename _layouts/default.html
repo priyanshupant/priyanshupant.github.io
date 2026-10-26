@@ -28,7 +28,7 @@ a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
 .home-side { min-width: 0; }
 .home-side .portrait { display: block; width: 267px; height: 319px; max-width: 100%; object-fit: cover; object-position: center 38%; border-radius: 10px; }
 .home-main { padding-top: 26px; }
-/* Particle network only on the home page, visually limited to its lower half. */
+/* Particle network only on the home page, visually limited to its upper half. */
 .home-with-particles .topbar,
 .home-with-particles .home-layout {
   position: relative;
@@ -48,9 +48,9 @@ a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
   overflow: hidden;
   pointer-events: none;
   /* Keep the canvas full-viewport for correct cursor coordinates,
-     but show particles only below the midpoint, fading in softly. */
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 50%, #000 65%, #000 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, transparent 50%, #000 65%, #000 100%);
+     but show particles only above the midpoint, fading out softly. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 50%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 50%, transparent 100%);
 }
 .home-graph #home-graph-particles {
   width: 100%;
@@ -124,7 +124,7 @@ li { margin: 0 0 9px; }
 </head>
 <body{% if page.page_key == 'home' %} class="home-with-particles"{% endif %}>
 {% if page.page_key == 'home' %}
-<section class="home-graph" aria-label="Subtle interactive particle background in the lower half of the home page">
+<section class="home-graph" aria-label="Subtle interactive particle background in the upper half of the home page">
   <div id="home-graph-particles" aria-hidden="true"></div>
 </section>
 {% endif %}
