@@ -28,14 +28,15 @@ a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
 .home-side { min-width: 0; }
 .home-side .portrait { display: block; width: 267px; height: 319px; max-width: 100%; object-fit: cover; object-position: center 38%; border-radius: 10px; }
 .home-main { padding-top: 26px; }
-/* Soft particle network behind the entire home page.
-   Keep text/nav/photo ABOVE it and let mouse events reach the window. */
-.home-with-particles .topbar,
-.home-with-particles .home-layout {
+/* The same particle network sits behind every site's page.
+   Keep navigation and text above it and clickable. */
+.site-with-particles .topbar,
+.site-with-particles .home-layout,
+.site-with-particles .page-main {
   position: relative;
   z-index: 1;
 }
-.home-with-particles .topbar {
+.site-with-particles .topbar {
   background: transparent;
 }
 .home-graph {
@@ -119,7 +120,10 @@ li { margin: 0 0 9px; }
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" sizes="180x180" href="/touch-empty-v4.png">
 </head>
-<body{% if page.page_key == 'home' %} class="home-with-particles"{% endif %}>
+<body class="site-with-particles">
+<section class="home-graph" aria-label="Subtle interactive particle background">
+  <div id="home-graph-particles" aria-hidden="true"></div>
+</section>
 <header class="topbar">
 <a class="site-name" href="index.html">Priyanshu Pant</a>
 <nav aria-label="Main navigation">
@@ -140,16 +144,13 @@ li { margin: 0 0 9px; }
 
 </main>
 </div>
-<section class="home-graph" aria-label="Subtle interactive particle background">
-  <div id="home-graph-particles" aria-hidden="true"></div>
-</section>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
-<script defer src="/assets/js/home-graph.js?v=4"></script>
 {% else %}
 <main class="page-main page-{{ page.page_key }}">
 {{ content }}
 </main>
 {% endif %}
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+<script defer src="/assets/js/home-graph.js?v=5"></script>
 
 <script data-goatcounter="https://priyanshupant.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
