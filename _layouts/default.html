@@ -28,6 +28,19 @@ a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
 .home-side { min-width: 0; }
 .home-side .portrait { display: block; width: 267px; height: 319px; max-width: 100%; object-fit: cover; object-position: center 38%; border-radius: 10px; }
 .home-main { padding-top: 26px; }
+/* Quiet interactive graph, below the home-page content only. */
+.home-graph {
+  width: min(1160px, calc(100% - 52px));
+  height: clamp(205px, 24vw, 280px);
+  margin: -26px auto 72px;
+  overflow: hidden;
+}
+.home-graph canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
 .home-main h1,.home-main h2,.home-main h3 { font-weight: 300; }
 main { min-width: 0; }
 h1,h2,h3 { font-family: "Lato",Arial,Helvetica,sans-serif; font-weight: 700; }
@@ -73,6 +86,7 @@ li { margin: 0 0 9px; }
   .home-layout { display: block; width: auto; margin: 23px 19px 65px; }
   .home-side .portrait { width: min(267px,100%); height: auto; aspect-ratio: 267/319; object-fit: cover; }
   .home-main { padding-top: 25px; }
+  .home-graph { width: calc(100% - 38px); height: 185px; min-height: 185px; margin: -35px 19px 55px; }
   .page-main { width: auto; margin: 30px 19px 65px; }
   h1 { font-size: 22px; }
   h2 { font-size: 19px; }
@@ -109,6 +123,10 @@ li { margin: 0 0 9px; }
 
 </main>
 </div>
+<section class="home-graph" aria-label="An interactive graph whose edges separate around the mouse cursor">
+  <canvas id="home-graph-canvas" role="img" aria-label="Move the pointer over this geometric graph to part its edges."></canvas>
+</section>
+<script defer src="/assets/js/home-graph.js"></script>
 {% else %}
 <main class="page-main page-{{ page.page_key }}">
 {{ content }}
