@@ -35,11 +35,14 @@ a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
   margin: -26px auto 72px;
   overflow: hidden;
 }
-.home-graph canvas {
+.home-graph #home-graph-particles {
+  width: 100%;
+  height: 100%;
+}
+.home-graph .particles-js-canvas-el {
   display: block;
   width: 100%;
   height: 100%;
-  cursor: crosshair;
 }
 .home-main h1,.home-main h2,.home-main h3 { font-weight: 300; }
 main { min-width: 0; }
@@ -123,10 +126,11 @@ li { margin: 0 0 9px; }
 
 </main>
 </div>
-<section class="home-graph" aria-label="An interactive graph whose edges separate around the mouse cursor">
-  <canvas id="home-graph-canvas" role="img" aria-label="Move the pointer over this geometric graph to part its edges."></canvas>
+<section class="home-graph" aria-label="Interactive particle graph with mouse repulsion">
+  <div id="home-graph-particles" aria-hidden="true"></div>
 </section>
-<script defer src="/assets/js/home-graph.js?v=2"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+<script defer src="/assets/js/home-graph.js?v=3"></script>
 {% else %}
 <main class="page-main page-{{ page.page_key }}">
 {{ content }}
