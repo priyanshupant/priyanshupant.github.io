@@ -1,5 +1,5 @@
 /*
- * Home page graph: Vincent Garreau's particles.js 2.0.0.
+ * Site-wide background graph: Vincent Garreau's particles.js 2.0.0.
  * The library is loaded immediately before this configuration in
  * _layouts/default.html.
  *
@@ -35,15 +35,15 @@
         anim: { enable: false }
       },
       size: {
-        value: 2.1,
+        value: 3.0,
         random: true,
         anim: { enable: false }
       },
       line_linked: {
         enable: true,
-        distance: 134,
+        distance: 150,
         color: "#505050",
-        opacity: 0.19,
+        opacity: 0.24,
         width: 1
       },
       move: {
@@ -65,7 +65,7 @@
         resize: true
       },
       modes: {
-        repulse: { distance: 135, duration: 0.4 }
+        repulse: { distance: 165, duration: 0.4 }
       }
     },
     retina_detect: true
