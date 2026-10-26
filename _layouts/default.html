@@ -28,7 +28,7 @@ a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
 .home-side { min-width: 0; }
 .home-side .portrait { display: block; width: 267px; height: 319px; max-width: 100%; object-fit: cover; object-position: center 38%; border-radius: 10px; }
 .home-main { padding-top: 26px; }
-/* Subtle particle network behind the lower half of every page. */
+/* Enlarged particle network behind the lower portion of every page. */
 .site-with-particles .topbar,
 .site-with-particles .home-layout,
 .site-with-particles .page-main {
@@ -49,9 +49,9 @@ a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
   overflow: hidden;
   pointer-events: none;
   /* Keep the canvas full-viewport for correct cursor coordinates,
-     but show particles only below the midpoint, fading in softly. */
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 50%, #000 65%, #000 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, transparent 50%, #000 65%, #000 100%);
+     but reveal the larger particle network from the lower two thirds, fading in softly. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 35%, #000 52%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, transparent 35%, #000 52%, #000 100%);
 }
 .home-graph #home-graph-particles {
   width: 100%;
@@ -153,7 +153,7 @@ li { margin: 0 0 9px; }
 </main>
 {% endif %}
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
-<script defer src="/assets/js/home-graph.js?v=6"></script>
+<script defer src="/assets/js/home-graph.js?v=7"></script>
 
 <script data-goatcounter="https://priyanshupant.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
