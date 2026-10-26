@@ -1,208 +1,220 @@
 /*
- * Minimal interactive graph for the home page.
- * No libraries, external data, or animation running when idle.
+ * Subtle interactive geometric graph for Priyanshu's homepage.
+ * Inspired by open-source linked-particle / mouse-repulsion demos.
+ *
+ * Unlike the previous version, this DOES NOT erase a circle from the lines:
+ * vertices physically move, links stretch with them, and springs restore
+ * the mesh once the pointer leaves.
+ *
+ * Self-contained: no dependencies, tracking, or network requests.
  */
 (() => {
   "use strict";
+
   const canvas = document.getElementById("home-graph-canvas");
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const pointer = { x: 0, y: 0, inside: false };
-  let width = 0, height = 0, radius = 62, strength = 0;
-  let vertices = [], edges = [], frameId = null;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pointer = { x: -1000, y: -1000, active: false };
+  let width = 0;
+  let height = 0;
+  let radius = 125;
+  let nodes = [];
+  let links = [];
+  let frame = 0;
+  let inView = true;
 
-  function seededRandom(seed) {
+  // Predictable distribution so the graph does not change on every refresh.
+  function randomGenerator(seed) {
     return () => {
       seed |= 0;
-      seed = seed + 0x6D2B79F5 | 0;
-      let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
-      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      seed = (seed + 0x6D2B79F5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     };
   }
 
-  function buildGraph() {
-    const random = seededRandom(20261026);
-    const columns = Math.max(5, Math.round(width / 62));
-    const rows = Math.max(3, Math.round(height / 56));
-    vertices = [];
-    edges = [];
+  function buildMesh() {
+    const rand = randomGenerator(146021);
+    const spacing = Math.max(48, Math.min(72, width / 17));
+    nodes = [];
+    links = [];
 
-    // A reproducible, slightly irregular geometric graph.
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < columns; c++) {
-        if (random() < 0.06) continue;
-        const x = (c + 0.40 + (r % 2) * 0.20 + (random() - .5) * .40) * width / columns;
-        const y = (r + 0.5 + (random() - .5) * .50) * height / rows;
-        vertices.push({ x, y, dx: 0, dy: 0 });
+    // A gently irregular, staggered lattice; no harsh regular grid.
+    const rows = Math.ceil(height / spacing) + 1;
+    const cols = Math.ceil(width / spacing) + 1;
+    for (let row = 0; row <= rows; row++) {
+      for (let col = -1; col <= cols; col++) {
+        if (rand() < 0.075) continue;
+        const x = (col + (row % 2) * .5 + (rand() - .5) * .42) * spacing;
+        const y = (row + (rand() - .5) * .48) * spacing;
+        if (x < -12 || x > width + 12 || y < -12 || y > height + 12) continue;
+        nodes.push({ x, y, homeX: x, homeY: y, vx: 0, vy: 0 });
       }
     }
 
-    const candidates = [];
-    const limit = Math.max(width / columns, height / rows) * 1.62;
-    for (let i = 0; i < vertices.length; i++) {
-      for (let j = i + 1; j < vertices.length; j++) {
-        const dx = vertices[i].x - vertices[j].x;
-        const dy = vertices[i].y - vertices[j].y;
-        const distance2 = dx * dx + dy * dy;
-        if (distance2 < limit * limit) candidates.push({ i, j, distance2 });
+    const possible = [];
+    const maxLinkLength = spacing * 1.62;
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < maxLinkLength * maxLinkLength) {
+          possible.push({ a: i, b: j, rest: Math.sqrt(d2) });
+        }
       }
     }
-
-    candidates.sort((a, b) => a.distance2 - b.distance2);
-    const degree = Array(vertices.length).fill(0);
-    for (const edge of candidates) {
-      if (degree[edge.i] < 3 && degree[edge.j] < 3) {
-        edges.push([edge.i, edge.j]);
-        degree[edge.i]++;
-        degree[edge.j]++;
-      }
+    possible.sort((a, b) => a.rest - b.rest);
+    const degree = new Uint8Array(nodes.length);
+    for (const edge of possible) {
+      if (degree[edge.a] >= 4 || degree[edge.b] >= 4) continue;
+      links.push(edge);
+      degree[edge.a]++;
+      degree[edge.b]++;
     }
-    radius = Math.min(88, Math.max(46, width * .075));
-  }
-
-  function segment(a, b) {
-    ctx.moveTo(a.x, a.y);
-    ctx.lineTo(b.x, b.y);
-  }
-
-  function drawEdge(a, b, cutRadius) {
-    if (cutRadius <= 1) {
-      segment(a, b);
-      return;
-    }
-
-    // Split every edge where it crosses the circular cursor clearing.
-    const dx = b.x - a.x, dy = b.y - a.y;
-    const fx = a.x - pointer.x, fy = a.y - pointer.y;
-    const aa = dx * dx + dy * dy;
-    const bb = 2 * (fx * dx + fy * dy);
-    const cc = fx * fx + fy * fy - cutRadius * cutRadius;
-    const discriminant = bb * bb - 4 * aa * cc;
-
-    if (aa === 0 || discriminant <= 0) {
-      // Both endpoints can still be inside the clearing.
-      if (fx * fx + fy * fy > cutRadius * cutRadius) segment(a, b);
-      return;
-    }
-
-    const root = Math.sqrt(discriminant);
-    const enter = Math.max(0, (-bb - root) / (2 * aa));
-    const exit = Math.min(1, (-bb + root) / (2 * aa));
-    if (enter >= exit) {
-      segment(a, b);
-      return;
-    }
-    if (enter > 0) {
-      ctx.moveTo(a.x, a.y);
-      ctx.lineTo(a.x + dx * enter, a.y + dy * enter);
-    }
-    if (exit < 1) {
-      ctx.moveTo(a.x + dx * exit, a.y + dy * exit);
-      ctx.lineTo(b.x, b.y);
-    }
+    radius = Math.max(74, Math.min(130, width * .115));
   }
 
   function render() {
-    frameId = null;
-    if (document.hidden || !width || !height) return;
-
-    const goal = pointer.inside ? 1 : 0;
-    strength = reduceMotion ? goal : strength + (goal - strength) * .16;
-    if (Math.abs(goal - strength) < .003) strength = goal;
-
-    const drawingRadius = radius * strength;
-    let stillMoving = Math.abs(goal - strength) > .003;
-
     ctx.clearRect(0, 0, width, height);
-    for (const vertex of vertices) {
-      let targetX = 0, targetY = 0;
-      if (pointer.inside && strength > 0) {
-        const vx = vertex.x - pointer.x, vy = vertex.y - pointer.y;
-        const distance = Math.hypot(vx, vy);
-        const range = radius * 1.7;
-        if (distance < range && distance > .001) {
-          const push = 17 * Math.pow(1 - distance / range, 2) * strength;
-          targetX = vx / distance * push;
-          targetY = vy / distance * push;
+    ctx.lineCap = "round";
+    ctx.lineWidth = .9;
+
+    // Every line is always attached to its moving endpoints.
+    // Very overstretched links fade naturally, instead of being cut by a disk.
+    for (const link of links) {
+      const a = nodes[link.a], b = nodes[link.b];
+      const stretched = Math.hypot(a.x - b.x, a.y - b.y) / link.rest;
+      const opacity = .30 * Math.max(.09, Math.min(1, (1.92 - stretched) / .50));
+      ctx.strokeStyle = "rgba(38,44,49," + opacity.toFixed(3) + ")";
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+
+    ctx.beginPath();
+    for (const node of nodes) {
+      ctx.moveTo(node.x + 1.8, node.y);
+      ctx.arc(node.x, node.y, 1.8, 0, Math.PI * 2);
+    }
+    ctx.fillStyle = "rgba(35,41,47,.68)";
+    ctx.fill();
+  }
+
+  function animate() {
+    frame = 0;
+    if (!inView || document.hidden) return;
+
+    let moving = false;
+    if (!reducedMotion) {
+      // Tension in adjacent edges makes the network respond as a mesh.
+      for (const edge of links) {
+        const a = nodes[edge.a], b = nodes[edge.b];
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const d = Math.hypot(dx, dy);
+        if (d < .01) continue;
+        const force = (d - edge.rest) * .0019 / d;
+        const fx = dx * force, fy = dy * force;
+        a.vx += fx; a.vy += fy;
+        b.vx -= fx; b.vy -= fy;
+      }
+
+      for (const node of nodes) {
+        // Home springs + damping make the mesh settle instead of jittering.
+        node.vx += (node.homeX - node.x) * .021;
+        node.vy += (node.homeY - node.y) * .021;
+
+        if (pointer.active) {
+          const dx = node.x - pointer.x;
+          const dy = node.y - pointer.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < radius) {
+            const falloff = Math.pow(1 - dist / radius, 2);
+            const push = falloff * 3.0;
+            // Fixed tiny direction if the cursor is exactly on a vertex.
+            const ux = dist > .001 ? dx / dist : 1;
+            const uy = dist > .001 ? dy / dist : 0;
+            node.vx += ux * push;
+            node.vy += uy * push;
+          }
+        }
+
+        node.vx *= .82;
+        node.vy *= .82;
+        node.x += node.vx;
+        node.y += node.vy;
+
+        if (Math.abs(node.vx) + Math.abs(node.vy) > .018 ||
+            Math.abs(node.x - node.homeX) + Math.abs(node.y - node.homeY) > .08) {
+          moving = true;
         }
       }
-      if (reduceMotion) {
-        vertex.dx = targetX;
-        vertex.dy = targetY;
-      } else {
-        vertex.dx += (targetX - vertex.dx) * .17;
-        vertex.dy += (targetY - vertex.dy) * .17;
-      }
-      if (Math.abs(targetX - vertex.dx) + Math.abs(targetY - vertex.dy) > .02) stillMoving = true;
     }
-
-    ctx.strokeStyle = "rgba(55, 60, 64, 0.31)";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    for (const [i, j] of edges) {
-      const v = vertices[i], w = vertices[j];
-      drawEdge(
-        { x: v.x + v.dx, y: v.y + v.dy },
-        { x: w.x + w.dx, y: w.y + w.dy },
-        drawingRadius
-      );
-    }
-    ctx.stroke();
-
-    ctx.fillStyle = "rgba(43, 48, 53, 0.72)";
-    ctx.beginPath();
-    for (const vertex of vertices) {
-      const x = vertex.x + vertex.dx, y = vertex.y + vertex.dy;
-      if (drawingRadius > 1 && Math.hypot(x - pointer.x, y - pointer.y) < drawingRadius) continue;
-      ctx.moveTo(x + 1.8, y);
-      ctx.arc(x, y, 1.8, 0, Math.PI * 2);
-    }
-    ctx.fill();
-
-    if (stillMoving) schedule();
+    render();
+    if (moving) schedule();
   }
 
   function schedule() {
-    if (frameId === null && !document.hidden) frameId = requestAnimationFrame(render);
+    if (!frame && inView && !document.hidden) frame = requestAnimationFrame(animate);
   }
 
   function resize() {
-    const box = canvas.getBoundingClientRect();
-    width = box.width;
-    height = box.height;
-    if (!width || !height) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.round(width * dpr);
-    canvas.height = Math.round(height * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    buildGraph();
+    const bounds = canvas.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+    width = bounds.width;
+    height = bounds.height;
+
+    const scale = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(width * scale);
+    canvas.height = Math.round(height * scale);
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    buildMesh();
     schedule();
   }
 
-  canvas.addEventListener("pointermove", event => {
-    if (event.pointerType === "touch") return;
-    const box = canvas.getBoundingClientRect();
-    pointer.x = event.clientX - box.left;
-    pointer.y = event.clientY - box.top;
-    pointer.inside = true;
+  function setPointer(e) {
+    if (reducedMotion || e.pointerType === "touch") return;
+    const bounds = canvas.getBoundingClientRect();
+    pointer.x = e.clientX - bounds.left;
+    pointer.y = e.clientY - bounds.top;
+    pointer.active = true;
     schedule();
-  }, { passive: true });
-  canvas.addEventListener("pointerleave", () => {
-    pointer.inside = false;
+  }
+
+  function releasePointer() {
+    pointer.active = false;
     schedule();
-  });
+  }
+
+  canvas.addEventListener("pointerenter", setPointer, { passive: true });
+  canvas.addEventListener("pointermove", setPointer, { passive: true });
+  canvas.addEventListener("pointerleave", releasePointer);
+  canvas.addEventListener("pointercancel", releasePointer);
+  window.addEventListener("blur", releasePointer);
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden && frameId !== null) {
-      cancelAnimationFrame(frameId);
-      frameId = null;
+    if (document.hidden && frame) {
+      cancelAnimationFrame(frame);
+      frame = 0;
     } else if (!document.hidden) schedule();
   });
 
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => {
+      inView = entries[0].isIntersecting;
+      if (!inView && frame) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+      } else if (inView) schedule();
+    }, { threshold: 0.01 }).observe(canvas);
+  }
+
   if ("ResizeObserver" in window) new ResizeObserver(resize).observe(canvas);
   else window.addEventListener("resize", resize);
+
   resize();
 })();
