@@ -28,13 +28,14 @@ a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
 .home-side { min-width: 0; }
 .home-side .portrait { display: block; width: 267px; height: 319px; max-width: 100%; object-fit: cover; object-position: center 38%; border-radius: 10px; }
 .home-main { padding-top: 26px; }
-/* Particle network only on the home page, visually limited to its upper half. */
-.home-with-particles .topbar,
-.home-with-particles .home-layout {
+/* Subtle particle network behind the lower half of every page. */
+.site-with-particles .topbar,
+.site-with-particles .home-layout,
+.site-with-particles .page-main {
   position: relative;
   z-index: 1;
 }
-.home-with-particles .topbar {
+.site-with-particles .topbar {
   background: transparent;
 }
 .home-graph {
@@ -48,9 +49,9 @@ a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
   overflow: hidden;
   pointer-events: none;
   /* Keep the canvas full-viewport for correct cursor coordinates,
-     but show particles only above the midpoint, fading out softly. */
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 50%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 50%, transparent 100%);
+     but show particles only below the midpoint, fading in softly. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 50%, #000 65%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, transparent 50%, #000 65%, #000 100%);
 }
 .home-graph #home-graph-particles {
   width: 100%;
@@ -122,12 +123,10 @@ li { margin: 0 0 9px; }
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" sizes="180x180" href="/touch-empty-v4.png">
 </head>
-<body{% if page.page_key == 'home' %} class="home-with-particles"{% endif %}>
-{% if page.page_key == 'home' %}
-<section class="home-graph" aria-label="Subtle interactive particle background in the upper half of the home page">
+<body class="site-with-particles">
+<section class="home-graph" aria-label="Subtle interactive particle background in the lower half of each page">
   <div id="home-graph-particles" aria-hidden="true"></div>
 </section>
-{% endif %}
 <header class="topbar">
 <a class="site-name" href="index.html">Priyanshu Pant</a>
 <nav aria-label="Main navigation">
@@ -153,10 +152,8 @@ li { margin: 0 0 9px; }
 {{ content }}
 </main>
 {% endif %}
-{% if page.page_key == 'home' %}
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
-<script defer src="/assets/js/home-graph.js?v=5"></script>
-{% endif %}
+<script defer src="/assets/js/home-graph.js?v=6"></script>
 
 <script data-goatcounter="https://priyanshupant.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
