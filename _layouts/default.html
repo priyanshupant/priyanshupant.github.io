@@ -28,41 +28,6 @@ a:focus-visible { outline: 2px solid #397be4; outline-offset: 3px; }
 .home-side { min-width: 0; }
 .home-side .portrait { display: block; width: 267px; height: 319px; max-width: 100%; object-fit: cover; object-position: center 38%; border-radius: 10px; }
 .home-main { padding-top: 26px; }
-/* Enlarged particle network behind the lower portion of every page. */
-.site-with-particles .topbar,
-.site-with-particles .home-layout,
-.site-with-particles .page-main {
-  position: relative;
-  z-index: 1;
-}
-.site-with-particles .topbar {
-  background: transparent;
-}
-.home-graph {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  margin: 0;
-  overflow: hidden;
-  pointer-events: none;
-  /* Keep the canvas full-viewport for correct cursor coordinates,
-     but reveal the larger particle network from the lower two thirds, fading in softly. */
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 35%, #000 52%, #000 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, transparent 35%, #000 52%, #000 100%);
-}
-.home-graph #home-graph-particles {
-  width: 100%;
-  height: 100%;
-}
-.home-graph .particles-js-canvas-el {
-  display: block;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
 .home-main h1,.home-main h2,.home-main h3 { font-weight: 300; }
 main { min-width: 0; }
 h1,h2,h3 { font-family: "Lato",Arial,Helvetica,sans-serif; font-weight: 700; }
@@ -123,10 +88,7 @@ li { margin: 0 0 9px; }
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" sizes="180x180" href="/touch-empty-v4.png">
 </head>
-<body class="site-with-particles">
-<section class="home-graph" aria-label="Subtle interactive particle background in the lower half of each page">
-  <div id="home-graph-particles" aria-hidden="true"></div>
-</section>
+<body>
 <header class="topbar">
 <a class="site-name" href="index.html">Priyanshu Pant</a>
 <nav aria-label="Main navigation">
@@ -152,8 +114,6 @@ li { margin: 0 0 9px; }
 {{ content }}
 </main>
 {% endif %}
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
-<script defer src="/assets/js/home-graph.js?v=7"></script>
 
 <script data-goatcounter="https://priyanshupant.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
