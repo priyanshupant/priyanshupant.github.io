@@ -2,120 +2,122 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101114">
-  <title>Manim Studio · Browser Workspace</title>
-  <meta name="description" content="A local-first Manim slide editor that runs on GitHub Pages.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#242933">
+  <meta name="description" content="Manim Studio — an Overleaf-style workspace for writing and presenting Manim Slides.">
+  <title>Manim Studio — Online Manim Slides Editor</title>
   <link rel="stylesheet" href="./vendor/codemirror/codemirror.css">
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./studio-v2.css">
   <script defer src="./vendor/codemirror/codemirror.js"></script>
   <script defer src="./vendor/codemirror/python.js"></script>
   <script defer src="./vendor/codemirror/closebrackets.js"></script>
   <script defer src="./vendor/jszip.min.js"></script>
-  <script defer src="./app.js"></script>
+  <script defer src="./studio-config.js"></script>
+  <script defer src="./studio-v2.js"></script>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand"><span class="brand-icon">M</span><span>Manim <strong>Studio</strong></span><span class="edition">WEB</span></div>
-    <div class="top-actions">
-      <span id="saveStatus" class="save-status" role="status" aria-live="polite">Opening workspace…</span>
-      <button id="importButton" class="button">Import project ZIP</button>
-      <button id="exportButton" class="button">Export project ZIP</button>
-      <button id="pythonButton" class="button primary">Download Python</button>
-    </div>
-  </header>
+  <div id="notice" class="notice" hidden role="alert"></div>
+  <section class="auth-page" id="authView" aria-label="Sign in">
+    <header class="site-header">
+      <a class="wordmark" href="./" aria-label="Manim Studio home"><span class="brand-symbol">M</span><span>manim<span class="wordmark-strong">studio</span></span></a>
+      <nav><a href="https://github.com/priyanshupant/Manim-Studio" target="_blank" rel="noopener">Source code</a><a href="#about" id="learnLink">About</a></nav>
+    </header>
+    <div class="auth-content">
+      <div class="auth-intro">
+        <div class="auth-eyebrow">THE ONLINE MANIM SLIDES EDITOR</div>
+        <h1>Beautiful mathematical slides, written in Python.</h1>
+        <p>Write your scenes, compile with Manim, and present your ideas. All in one workspace.</p>
+        <div class="auth-editor-preview" aria-hidden="true">
+          <div class="mock-toolbar"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span>mathematics.py</span><b>Recompile</b></div>
+          <div class="mock-content">
+            <pre><span class="cmnt"># One connected scene</span>
+<span class="keyword">from</span> manim <span class="keyword">import</span> *
 
-  <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
-  <div class="app-layout">
-    <aside class="sidebar">
-      <div class="sidebar-head"><p class="eyebrow">YOUR WORKSPACE</p><button id="newProject" class="button">+ New</button></div>
-      <h2>Projects</h2>
-      <div class="project-list" id="projectList" aria-label="Saved projects"></div>
-      <div class="sidebar-divider"></div>
-      <div class="sidebar-head"><h2>Slides</h2><button id="addSlide" class="button">+ Add</button></div>
-      <div id="slideList" class="slide-list" aria-label="Slide list"></div>
-      <div class="sidebar-bottom">
-        <p><strong>Private by default.</strong> Projects are stored in this browser, not uploaded to GitHub. Export a ZIP to keep a backup or move it to the desktop app.</p>
-        <a href="https://github.com/priyanshupant/Manim-Studio" target="_blank" rel="noopener noreferrer">Source repository</a>
-      </div>
-    </aside>
-
-    <main id="editor" class="main" hidden>
-      <div class="workspace-heading">
-        <div class="heading-left"><label class="eyebrow" for="projectName">PROJECT NAME</label><input id="projectName" class="project-name" maxlength="160" aria-label="Project name"></div>
-        <div class="workspace-settings">
-          <label>Slide format<select id="aspect"><option value="16:9">16:9</option><option value="4:3">4:3</option></select></label>
-          <label>Export quality<select id="quality"><option value="480p">480p (Draft)</option><option value="720p">720p</option><option value="1080p">1080p</option><option value="4K">4K</option></select></label>
-          <button id="renameProject" class="button">Rename</button>
-          <button id="deleteProject" class="button danger">Delete project</button>
+axes = Axes()
+curve = axes.plot(
+    <span class="keyword">lambda</span> x: x**2
+)
+self.play(Create(curve))</pre>
+            <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet"><rect x="0" y="0" width="300" height="200" fill="#11161d"/><path d="M18 167 H284 M150 14 V189" stroke="#76899d" stroke-width="1"/><path d="M45 28 Q150 293 255 28" stroke="#6bb3ee" stroke-width="4" fill="none"/><text x="231" y="23" font-size="12" fill="#cce8ff">y=x²</text></svg>
+          </div>
         </div>
       </div>
-
-      <div class="editor-columns">
-        <section class="code-column">
-          <div class="code-card">
-            <div class="card-head"><div><p class="eyebrow">AVAILABLE TO EVERY SLIDE</p><h3>Shared Setup</h3></div><span class="mini-tag">PYTHON</span></div>
-            <p class="help">Imports, colors, constants and helper functions. Manim imports are added automatically.</p>
-            <textarea id="setupCode" aria-label="Shared Setup Python code" spellcheck="false"></textarea>
-          </div>
-          <div class="code-card">
-            <div class="card-head"><div><p id="slideNumber" class="eyebrow">SLIDE 1</p><h3>Slide code</h3></div>
-              <div class="card-actions">
-                <label class="switch-label"><input id="slideEnabled" type="checkbox" checked> Include in Compile All</label>
-                <button id="duplicateSlide" class="button small">Duplicate</button>
-                <button id="moveUp" class="button small" title="Move slide up">↑</button>
-                <button id="moveDown" class="button small" title="Move slide down">↓</button>
-                <button id="deleteSlide" class="button small danger">Delete</button>
-              </div>
-            </div>
-            <div class="snippet-bar"><label for="snippets">Insert snippet</label>
-              <select id="snippets">
-                <option value="text">Text</option><option value="math">MathTex</option><option value="axes">Axes and curve</option>
-                <option value="shape">Circle</option><option value="transform">Transform</option>
-                <option value="wait">Wait</option><option value="pause">Presentation pause</option><option value="asset">Image asset</option>
-              </select><button id="insertSnippet" class="button small">Insert</button>
-            </div>
-            <textarea id="slideCode" aria-label="Selected slide Python code" spellcheck="false"></textarea>
-            <p class="help">Variables persist across enabled slides. Each slide becomes part of one connected Manim scene.</p>
-          </div>
-        </section>
-        <aside class="info-column">
-          <section class="info-card" id="browserPreviewCard"><div class="card-head"><div><p class="eyebrow">LIVE BROWSER ENGINE (EXPERIMENTAL)</p><h3>Preview your Manim slides</h3></div></div>
-            <div class="preview-toolbar">
-              <button id="runPreview" type="button" class="button primary">Run preview</button>
-              <button id="stopPreview" type="button" class="button" disabled>Stop</button>
-              <button id="fullPreview" type="button" class="button" disabled>Fullscreen</button>
-            </div>
-            <div class="preview-frame-wrapper">
-              <iframe id="browserPreview" title="Sandboxed browser animation preview" sandbox="allow-scripts" loading="lazy" referrerpolicy="no-referrer" src="./preview-frame.html"></iframe>
-            </div>
-            <div class="preview-toolbar preview-navigation">
-              <button id="prevPreview" type="button" class="button small" disabled>Previous</button>
-              <button id="replayPreview" type="button" class="button small" disabled>Replay</button>
-              <button id="nextPreview" type="button" class="button small" disabled>Next</button>
-            </div>
-            <p id="previewStatus" class="help" role="status" aria-live="polite">Click Run preview to start. The animation runs on this device; no rendering server is required.</p>
-            <p class="help">Powered by Wanim, a separate Manim-compatible browser engine. This is not an exact native Manim render. Some Python features, imported packages, uploaded assets, and slide pauses are unsupported. Only run code you trust.</p>
-          </section>
-          <section class="info-card"><p class="eyebrow">FULL MANIM COMPATIBILITY</p><h3>Native rendering remains available</h3>
-            
-            <p>For fully compatible Manim Community and Manim Slides output, continue rendering in the desktop Studio. The browser preview above uses a separate runtime and may differ.</p>
-            <div class="steps"><p><strong>1.</strong> Edit slides and upload supporting assets.</p><p><strong>2.</strong> Export Project ZIP for the original desktop app.</p><p><strong>3.</strong> Or download a standalone Python scene and render it with Manim.</p></div>
-          </section>
-          <section class="info-card"><div class="card-head"><div><p class="eyebrow">PROJECT FILES</p><h3>Assets</h3></div><button id="uploadAsset" class="button small">Upload</button></div>
-            <input id="assetInput" type="file" multiple hidden>
-            <p class="help">Assets are included in project ZIP exports. Use the insert button to add a relative Python path.</p>
-            <div id="assetList" class="asset-list"></div>
-          </section>
-          <section class="info-card"><p class="eyebrow">LOCAL RENDERING</p><h3>Run the Python export</h3>
-            <code class="command">manim -pql scene.py StudioScene</code>
-            <p class="help">Install Manim Community and Manim Slides first. If you use project assets, the ZIP import in desktop Studio is the recommended route.</p>
-          </section>
-        </aside>
+      <div class="login-card">
+        <h2>Log in to Manim Studio</h2>
+        <p>Access your projects and presentations.</p>
+        <button id="githubLogin" type="button" class="github-signin"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 .9A11.1 11.1 0 0 0 8.49 22.53c.55.1.76-.24.76-.54v-2.09c-3.1.67-3.75-1.31-3.75-1.31-.5-1.27-1.24-1.6-1.24-1.6-1.02-.7.08-.69.08-.69 1.12.08 1.72 1.15 1.72 1.15 1 .1 2.1.04 2.6-.61.1-.74.4-1.24.72-1.52-2.47-.28-5.06-1.24-5.06-5.49 0-1.2.42-2.2 1.15-2.98-.12-.28-.5-1.41.11-2.94 0 0 .95-.3 3.05 1.14A10.5 10.5 0 0 1 12 6.2c.95 0 1.9.13 2.8.38 2.1-1.43 3.03-1.14 3.03-1.14.61 1.53.23 2.66.12 2.94.73.78 1.15 1.78 1.15 2.98 0 4.26-2.6 5.21-5.08 5.48.4.35.76 1.06.76 2.14V22c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/></svg>Continue with GitHub</button>
+        <div class="auth-divider"><span>WORKSPACE PREVIEW</span></div>
+        <button id="localPreview" type="button" class="outline-button">Explore in this browser</button>
+        <p class="login-hint" id="authHint">GitHub sign-in requires a configured authentication service. Preview mode uses local browser storage and does not sync to GitHub.</p>
+        <p id="authError" class="form-error" role="status" hidden></p>
       </div>
-    </main>
-    <section id="welcome" class="welcome" hidden><h1>Manim Studio</h1><p>Create a Manim project in your browser. Your work stays on this device until you export it.</p><button id="welcomeNew" class="button primary">Create a project</button></section>
-  </div>
-  <input id="importFile" type="file" accept=".zip,application/zip" hidden>
+    </div>
+    <footer id="about">Manim Studio · An independent project inspired by Overleaf's editing workflow. Not affiliated with Overleaf.</footer>
+  </section>
+
+  <section class="dashboard-page" id="dashboardView" hidden aria-label="Projects">
+    <header class="site-header">
+      <button class="wordmark wordmark-button" id="dashboardHome"><span class="brand-symbol">M</span><span>manim<span class="wordmark-strong">studio</span></span></button>
+      <nav><span class="workspace-mode" id="dashboardAccount">Browser preview · Not signed in</span><button class="header-link" id="dashboardSignout">Log out</button></nav>
+    </header>
+    <div class="dashboard-layout">
+      <aside class="dashboard-sidebar">
+        <button class="green-button new-project-button" id="newProject">+ New Project</button>
+        <nav class="dash-nav" aria-label="Project navigation">
+          <button class="active" id="showAll">▤ <span>All Projects</span></button>
+          <button id="showRecent">◷ <span>Recent</span></button>
+          <button id="showArchived">▣ <span>Archived</span></button>
+        </nav>
+        <div class="sidebar-section-label">TOOLS</div>
+        <button id="importProject" class="sidebar-action">↑ Import Project ZIP</button>
+        <button id="openLegacy" class="sidebar-action">↗ Previous editor</button>
+        <p class="sidebar-footnote">The current preview workspace is saved in this browser. GitHub sync is not active.</p>
+      </aside>
+      <main class="dashboard-main">
+        <div class="dashboard-topline"><h1>Your Projects</h1><div class="dashboard-top-actions"><button id="createTop" class="green-button">+ New Project</button></div></div>
+        <p class="dashboard-subtitle" id="dashboardSubtitle">All the mathematical presentations you're working on.</p>
+        <div class="dashboard-filters"><label class="search-field"><span>⌕</span><input id="searchProjects" type="search" placeholder="Search your projects" aria-label="Search projects"></label><select id="sortProjects" aria-label="Sort projects"><option value="recent">Last modified</option><option value="name">Name</option><option value="oldest">Oldest first</option></select></div>
+        <div class="projects-table-wrap"><table class="projects-table"><thead><tr><th>Project</th><th>Owner</th><th>Last modified</th><th>Slides</th><th aria-label="Actions"></th></tr></thead><tbody id="projectsTable"></tbody></table><div id="emptyProjects" class="empty-projects" hidden><div class="empty-icon">◇</div><h2>No projects here yet</h2><p>Create your first Manim Slides project to start writing.</p><button id="emptyNew" class="green-button">New Project</button></div></div>
+      </main>
+    </div>
+  </section>
+
+  <section class="workspace-page" id="editorView" hidden aria-label="Project editor">
+    <header class="editor-header">
+      <button id="backProjects" class="editor-brand" aria-label="Back to projects"><span class="brand-symbol small-brand">M</span></button>
+      <div class="editor-menus"><button id="fileMenu">File</button><button id="editMenu">Edit</button><button id="viewMenu">View</button><button id="helpMenu">Help</button></div>
+      <span class="editor-header-separator"></span>
+      <input id="projectName" class="editor-project-title" aria-label="Project name" maxlength="160">
+      <span id="saveStatus" class="editor-save-status" role="status">Opening…</span>
+      <div class="editor-header-right"><button id="historyButton" class="header-control">History</button><button id="shareButton" class="header-control">Share</button><button id="accountButton" class="avatar-button" title="Account">P</button></div>
+    </header>
+    <div class="editor-toolbar">
+      <div class="toolbar-left"><span class="toolbar-caption">Source Editor</span><button id="addSlide" class="toolbar-button">+ New Slide</button><button id="uploadAsset" class="toolbar-button">↑ Upload</button></div>
+      <div class="toolbar-right"><span id="renderMode" class="render-mode">Browser preview</span><button id="compile" class="green-button compile-button">▶ Recompile</button><button id="stopRender" class="toolbar-button" disabled>Stop</button><button id="downloadPython" class="toolbar-button" title="Download scene.py">↓ Python</button><button id="exportZip" class="toolbar-button">↓ Project ZIP</button><button id="present" class="toolbar-button">▣ Present</button></div>
+    </div>
+    <div class="editor-main">
+      <aside class="file-sidebar">
+        <div class="sidebar-title">PROJECT FILES <button id="toggleFileSidebar" title="Collapse files">«</button></div>
+        <nav id="fileTree" class="file-tree" aria-label="Project files"></nav>
+        <div class="file-sidebar-bottom"><button id="projectSettings" type="button">⚙ Project settings</button></div>
+      </aside>
+      <section class="source-pane">
+        <div class="source-tabs"><span id="currentTab" class="source-tab">Slide 1 · Python</span><div class="tab-actions"><button id="moveSlideUp" title="Move slide up">↑</button><button id="moveSlideDown" title="Move slide down">↓</button><button id="duplicateSlide" title="Duplicate slide">⧉</button><button id="deleteSlide" title="Delete slide">×</button></div></div>
+        <textarea id="codeInput" aria-label="Manim Python source" spellcheck="false"></textarea>
+        <div class="source-footer"><span id="slideStatus">Connected Manim scene</span><label class="include-switch"><input type="checkbox" id="slideEnabled" checked> Include slide</label><span id="cursorPosition">Python</span></div>
+      </section>
+      <div class="pane-resizer" id="paneResizer" role="separator" aria-orientation="vertical" tabindex="0" aria-label="Resize editor and preview panes"></div>
+      <section class="output-pane">
+        <div class="output-toolbar"><span>Preview</span><div class="output-controls"><button id="previousStep" title="Previous step" disabled>⏮</button><button id="playStep" title="Replay" disabled>▶</button><button id="nextStep" title="Next step" disabled>⏭</button><button id="fullscreen" title="Fullscreen preview" disabled>⛶</button></div></div>
+        <div class="preview-stage" id="previewStage"><iframe id="previewFrame" title="Manim animation preview" sandbox="allow-scripts" referrerpolicy="no-referrer" loading="lazy" src="./preview-frame.html"></iframe></div>
+        <div class="preview-info"><span id="previewStatus" role="status">Compile to see your animation here.</span><span class="preview-experiment">Experimental Wanim preview</span></div>
+        <div class="output-bottom"><div class="output-tabs"><button id="logsTab" class="active">Logs and output</button><button id="infoTab">Project info</button></div><pre id="outputLog" class="output-log" aria-live="polite">Ready. Browser preview supports a subset of Manim Community. Exact native Manim rendering is not yet connected.</pre><div id="projectInfo" class="project-info" hidden></div></div>
+      </section>
+    </div>
+  </section>
+  <dialog id="projectDialog" class="dialog"><form method="dialog" id="projectForm"><h2>New Project</h2><p>Start a Manim Slides presentation.</p><label>Project name<input id="newProjectName" maxlength="160" required placeholder="Untitled Project"></label><div class="dialog-actions"><button value="cancel" class="outline-button">Cancel</button><button id="confirmProject" value="create" class="green-button">Create</button></div></form></dialog>
+  <dialog id="settingsDialog" class="dialog"><div><h2>Project settings</h2><label>Slide format<select id="aspectRatio"><option value="16:9">16:9 widescreen</option><option value="4:3">4:3 standard</option></select></label><label>Export quality<select id="videoQuality"><option value="480p">480p Draft</option><option value="720p">720p</option><option value="1080p">1080p</option><option value="4K">4K</option></select></label><div class="dialog-actions"><button id="closeSettings" class="green-button">Done</button></div></div></dialog>
+  <input id="assetFileInput" type="file" multiple hidden>
+  <input id="zipFileInput" type="file" accept=".zip,application/zip" hidden>
 </body>
 </html>
