@@ -172,3 +172,16 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,[t
 .file-tree .asset-entry>button:first-child{flex:1;min-width:0}
 .file-tree .asset-entry .remove-asset{flex:0 0 27px;width:27px;color:#96a2a8;padding:7px 4px;text-align:center}
 .file-tree .asset-entry .remove-asset:hover{background:#ffeded;color:#aa3434}
+
+/* Authenticated GitHub project revision browser. */
+.history-dialog{width:min(610px,calc(100vw - 28px));max-height:min(80vh,720px)}
+.history-panel{display:flex;flex-direction:column;gap:14px;max-height:calc(80vh - 54px)}
+.history-panel h2{margin:0}
+.history-panel p{margin:0;color:#64707a;line-height:1.5;font-size:13px}
+.history-list{display:flex;flex-direction:column;gap:8px;overflow:auto;min-height:0;max-height:55vh}
+.history-entry{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid #e1e7e8;border-radius:9px;background:#fafcfc}
+.history-entry>div{display:flex;flex-direction:column;gap:5px;min-width:0}
+.history-entry strong{font-size:12px;overflow-wrap:anywhere}
+.history-entry small{font-size:11px;color:#718087}
+.history-entry button{flex-shrink:0}
+.history-panel>.outline-button{align-self:flex-end}
