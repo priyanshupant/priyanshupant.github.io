@@ -131,6 +131,77 @@ function moveSlide(dir){const n=current?.slides.findIndex(x=>x.id===selectedFile
 function deleteSlide(){const n=current?.slides.findIndex(x=>x.id===selectedFile)??-1;if(n<0||current.slides.length===1)return;if(!confirm('Delete slide '+(n+1)+' from this project?'))return;current.slides.splice(n,1);markDirty();selectFile(current.slides[Math.min(n,current.slides.length-1)].id);}
 function renderAssets(){renderFileTree();if(current)$('projectInfo').textContent='Slides: '+current.slides.length+'\nAssets: '+current.assets.length+'\nQuality: '+current.quality+'\nAspect ratio: '+(current.aspect_ratio||'16:9');}
 
+async function openProjectHistory(){
+  if(!current)return;
+  await saveNow();
+  if(storageMode!=='github'){
+    notice('History is available after GitHub sign-in. Use Export ZIP for local project backups.');
+    return;
+  }
+  const pid=current.id;
+  const {history:revisions=[]}=await cloud('/projects/'+pid+'/history');
+  const dialog=document.createElement('dialog');
+  dialog.className='dialog history-dialog';
+  const panel=document.createElement('div');
+  panel.className='history-panel';
+  const title=document.createElement('h2');
+  title.textContent='Project history';
+  const info=document.createElement('p');
+  info.textContent='Restore code and slide settings from a previous GitHub commit. Current uploaded assets are kept.';
+  const listing=document.createElement('div');
+  listing.className='history-list';
+  if(!revisions.length){
+    const message=document.createElement('p');
+    message.textContent='No saved revisions yet.';
+    listing.append(message);
+  }
+  for(const revision of revisions){
+    const item=document.createElement('div');
+    item.className='history-entry';
+    const details=document.createElement('div');
+    const heading=document.createElement('strong');
+    heading.textContent=revision.message||'Saved revision';
+    const when=document.createElement('small');
+    when.textContent=(revision.at?new Date(revision.at).toLocaleString()+' · ':'')+
+      revision.commit.slice(0,10);
+    details.append(heading,when);
+    const restore=document.createElement('button');
+    restore.type='button';
+    restore.className='toolbar-button';
+    restore.textContent='Restore';
+    restore.title='Restore this previous source revision';
+    restore.onclick=async()=>{
+      if(!confirm('Restore this source revision? This creates a new GitHub commit. Current project assets will remain unchanged.'))return;
+      restore.disabled=true;
+      try{
+        const updated=await cloud('/projects/'+pid+'/restore',{method:'POST',body:{
+          sha:cloudSha.get(pid),commit:revision.commit
+        }});
+        cloudSha.set(pid,updated.sha);
+        dialog.close();
+        await refreshProjects();
+        await openProject(pid);
+        notice('Previous source revision restored to GitHub.');
+      }catch(error){
+        restore.disabled=false;
+        errorMessage(error);
+      }
+    };
+    item.append(details,restore);
+    listing.append(item);
+  }
+  const close=document.createElement('button');
+  close.className='outline-button';
+  close.type='button';
+  close.textContent='Close';
+  close.onclick=()=>dialog.close();
+  panel.append(title,info,listing,close);
+  dialog.append(panel);
+  dialog.addEventListener('close',()=>dialog.remove(),{once:true});
+  document.body.append(dialog);
+  dialog.showModal();
+}
+
 /* Native Manim Slides playback from private GitHub Actions render artifacts. */
 let renderJob=null,nativeSegments=[],nativeUrls=[],nativeIndex=0,nativeResult=null;
 function disposeNativeVideos(){
@@ -297,7 +368,7 @@ $('downloadPython').onclick=()=>{try{exportPython();}catch(e){errorMessage(e);}}
 $('uploadAsset').onclick=()=>$('assetFileInput').click();$('assetFileInput').onchange=e=>{uploadAssets(e.target.files).catch(errorMessage);e.target.value='';};
 $('settingsDialog').addEventListener('close',()=>{});$('projectSettings').onclick=showSettings;$('closeSettings').onclick=()=>$('settingsDialog').close();$('aspectRatio').onchange=e=>{if(current){current.aspect_ratio=e.target.value;markDirty();renderAssets();}};$('videoQuality').onchange=e=>{if(current){current.quality=e.target.value;markDirty();renderAssets();}};
 $('logsTab').onclick=()=>toggleOutputTab(false);$('infoTab').onclick=()=>toggleOutputTab(true);
-$('historyButton').onclick=()=>notice('Version history will be available with private GitHub project storage. Local projects can currently be backed up as ZIP.');
+$('historyButton').onclick=()=>openProjectHistory().catch(errorMessage);
 $('shareButton').onclick=()=>notice('Shareable project links require authenticated cloud project storage. Your local browser projects are not publicly accessible.');
 $('accountButton').onclick=()=>{if(confirm('Return to the login screen?'))viewAuth();};
 for(const k of ['fileMenu','editMenu','viewMenu','helpMenu'])$(k).onclick=()=>editorMenu(k);
