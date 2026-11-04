@@ -80,9 +80,26 @@
           </div>
         </section>
         <aside class="info-column">
-          <section class="info-card"><p class="eyebrow">BROWSER EDITION</p><h3>Write here, render locally</h3>
-            <div class="preview-graphic" aria-hidden="true"><span class="graph-axis"></span><svg viewBox="0 0 300 140" preserveAspectRatio="none"><path d="M15 120 Q150 -86 285 120" fill="none" stroke="#94d4c5" stroke-width="3.5"/><circle cx="150" cy="17" r="4.5" fill="#94d4c5"/></svg><span class="preview-label">Manim Python workspace</span></div>
-            <p>GitHub Pages cannot execute Manim, FFmpeg or LaTeX. The browser version is for editing, organizing and exporting projects. Video compilation and presentation playback remain in the desktop Manim Studio.</p>
+          <section class="info-card" id="browserPreviewCard"><div class="card-head"><div><p class="eyebrow">LIVE BROWSER ENGINE (EXPERIMENTAL)</p><h3>Preview your Manim slides</h3></div></div>
+            <div class="preview-toolbar">
+              <button id="runPreview" type="button" class="button primary">Run preview</button>
+              <button id="stopPreview" type="button" class="button" disabled>Stop</button>
+              <button id="fullPreview" type="button" class="button" disabled>Fullscreen</button>
+            </div>
+            <div class="preview-frame-wrapper">
+              <iframe id="browserPreview" title="Sandboxed browser animation preview" sandbox="allow-scripts" loading="lazy" referrerpolicy="no-referrer" src="./preview-frame.html"></iframe>
+            </div>
+            <div class="preview-toolbar preview-navigation">
+              <button id="prevPreview" type="button" class="button small" disabled>Previous</button>
+              <button id="replayPreview" type="button" class="button small" disabled>Replay</button>
+              <button id="nextPreview" type="button" class="button small" disabled>Next</button>
+            </div>
+            <p id="previewStatus" class="help" role="status" aria-live="polite">Click Run preview to start. The animation runs on this device; no rendering server is required.</p>
+            <p class="help">Powered by Wanim, a separate Manim-compatible browser engine. This is not an exact native Manim render. Some Python features, imported packages, uploaded assets, and slide pauses are unsupported. Only run code you trust.</p>
+          </section>
+          <section class="info-card"><p class="eyebrow">FULL MANIM COMPATIBILITY</p><h3>Native rendering remains available</h3>
+            
+            <p>For fully compatible Manim Community and Manim Slides output, continue rendering in the desktop Studio. The browser preview above uses a separate runtime and may differ.</p>
             <div class="steps"><p><strong>1.</strong> Edit slides and upload supporting assets.</p><p><strong>2.</strong> Export Project ZIP for the original desktop app.</p><p><strong>3.</strong> Or download a standalone Python scene and render it with Manim.</p></div>
           </section>
           <section class="info-card"><div class="card-head"><div><p class="eyebrow">PROJECT FILES</p><h3>Assets</h3></div><button id="uploadAsset" class="button small">Upload</button></div>

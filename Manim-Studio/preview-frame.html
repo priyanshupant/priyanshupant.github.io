@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manim Studio browser preview</title>
+  <!-- Runtime is loaded only inside this restricted, opaque-origin iframe. -->
+  <script type="importmap">
+  {"imports":{"numpy-ts":"https://cdn.jsdelivr.net/npm/numpy-ts/dist/numpy-ts.browser.js"}}
+  </script>
+  <style>
+    :root{color-scheme:dark}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;overflow:hidden;background:#0b1114;color:#b9c4c6;font:12px system-ui,sans-serif}
+    wanim-scene{display:block;width:100%;height:100%;min-height:100%}
+    wanim-scene::part(canvas){max-width:100%;border-radius:0}
+    #fallback{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:14px;pointer-events:none}
+    #fallback[hidden]{display:none}
+  </style>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@wanimjs/wanim@0.1.0/browser/wanim-element.browser.js"></script>
+</head>
+<body>
+  <wanim-scene id="scene" mode="slides" quality="-qm" autoplay="false"></wanim-scene>
+  <div id="fallback">Preview engine ready to load</div>
+  <script>
+  (() => {
+    'use strict';
+    const channel='manim-studio-wanim-v1';
+    const player=document.getElementById('scene');
+    const fallback=document.getElementById('fallback');
+    let busy=false;
+    const report=(type,detail={})=>window.parent.postMessage({channel,type,...detail},'*');
+    const human=e=>{try{return String(e && (e.message || e.stack) || e).slice(0,1800)}catch{return 'Unknown preview error'}};
+    player.addEventListener('wanim-ready',()=>report('ready'));
+    player.addEventListener('wanim-run',()=>{busy=true;fallback.hidden=true;report('running')});
+    player.addEventListener('wanim-error',e=>{busy=false;fallback.hidden=false;fallback.textContent='Preview failed. See the error message above.';report('error',{message:human(e.detail&&e.detail.error)})});
+    player.addEventListener('wanim-done',()=>{busy=false;report('done')});
+    window.addEventListener('error',e=>report('error',{message:human(e.error || e.message)}));
+    window.addEventListener('unhandledrejection',e=>report('error',{message:human(e.reason)}));
+    window.addEventListener('message',async e=>{
+      if(e.source!==window.parent || !e.data || e.data.channel!==channel) return;
+      const d=e.data;
+      try{
+        if(d.type==='run'){
+          if(typeof d.code!=='string'||d.code.length>1200000)throw new Error('Preview source is too large.');
+          await customElements.whenDefined('wanim-scene');
+          if(busy)player.stop();
+          player.code=d.code;
+          player.quality=['-ql','-qm','-qh','-q4k'].includes(d.quality)?d.quality:'-qm';
+          player.mode='slides';
+          fallback.hidden=true;
+          const outcome=player.run();
+          if(outcome && outcome.catch)outcome.catch(error=>report('error',{message:human(error)}));
+          return;
+        }
+        if(d.type==='stop'){player.stop();busy=false;report('stopped');return;}
+        if(d.type==='next'){player.next();return;}
+        if(d.type==='previous'){player.previous();return;}
+        if(d.type==='replay'){player.replay();return;}
+      }catch(error){busy=false;report('error',{message:human(error)})}
+    });
+    report('frame-loaded');
+  })();
+  </script>
+</body>
+</html>

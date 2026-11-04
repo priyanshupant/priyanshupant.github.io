@@ -389,6 +389,100 @@ async function importZip(file) {
   await openProject(p.id);
   notice('Imported "'+p.name+'" with '+p.slides.length+' slide(s) and '+assets.length+' asset(s).');
 }
+// Fast, optional browser playback. Native Manim/Manim Slides remains the export target.
+const PREVIEW_CHANNEL='manim-studio-wanim-v1';
+let previewReady=false;
+let queuedPreview=null;
+let previewRunNumber=0;
+
+function buildBrowserPreviewSource(project) {
+  if (!project) throw new Error('Open a project first.');
+  const included=project.slides.filter(slide => slide.enabled!==false);
+  if (!included.length) throw new Error('Enable at least one slide for preview.');
+  const lines=['from manim import *','',project.setup||'','', 'class StudioScene(Scene):','    def construct(self):'];
+  for (const slide of included) {
+    lines.push('        # Slide '+(project.slides.indexOf(slide)+1));
+    const code=slide.code.replace(/\r\n?/g,'\n').split('\n');
+    let added=false;
+    for (const line of code) {
+      // A Manim Slides pause is not a Manim CE Scene method. Wanim's slides
+      // mode provides its own per-animation navigation instead.
+      if (/^\s*self\.next_slide\(\s*\)\s*(?:#.*)?$/.test(line)) continue;
+      lines.push(line ? '        '+line : '');
+      if (line.trim()) added=true;
+    }
+    if (!added) lines.push('        pass');
+  }
+  const source=lines.join('\n')+'\n';
+  if (source.length>1200000) throw new Error('The browser preview is limited to 1.2 million characters of Python source.');
+  return source;
+}
+function previewStatus(message,error=false) {
+  $('previewStatus').textContent=message;
+  $('previewStatus').style.color=error?'#f3a9a9':'';
+}
+function previewMessage(type, extra={}) {
+  const message={channel:PREVIEW_CHANNEL,type,...extra};
+  if (!previewReady) {
+    if (type==='run') queuedPreview=message;
+    return;
+  }
+  const frame=$('browserPreview');
+  if(frame.contentWindow)frame.contentWindow.postMessage(message,'*');
+}
+function startBrowserPreview() {
+  try {
+    // Save code before preview, but run the in-memory snapshot immediately.
+    saveNow().catch(errorMessage);
+    const code=buildBrowserPreviewSource(current);
+    previewRunNumber++;
+    const quality={'480p':'-ql','720p':'-qm','1080p':'-qh','4K':'-q4k'}[current.quality] || '-qm';
+    previewStatus('Loading browser renderer… The first run may take longer while its engine downloads.');
+    $('stopPreview').disabled=false;
+    $('fullPreview').disabled=false;
+    for (const id of ['nextPreview','prevPreview','replayPreview']) $(id).disabled=false;
+    previewMessage('run',{code,quality});
+  } catch (error) {previewStatus(error.message,true);}
+}
+function wirePreview() {
+  const frame=$('browserPreview');
+  window.addEventListener('message', event => {
+    if (event.source!==frame.contentWindow || !event.data || event.data.channel!==PREVIEW_CHANNEL) return;
+    const msg=event.data;
+    if (msg.type==='frame-loaded') {
+      previewReady=true;
+      if (queuedPreview) {frame.contentWindow.postMessage(queuedPreview,'*');queuedPreview=null;}
+    } else if(msg.type==='running') {
+      previewStatus('Playing locally. Use Next, Previous, and Replay to navigate.');
+    } else if(msg.type==='done') {
+      previewStatus('Presentation finished. Click Run preview to play it again.');
+      $('stopPreview').disabled=true;
+    } else if(msg.type==='stopped') {
+      previewStatus('Preview stopped.');
+      $('stopPreview').disabled=true;
+    } else if(msg.type==='error') {
+      previewStatus('Browser preview error: '+String(msg.message||'Unknown error').slice(0,1000)+'. For complete compatibility use native Manim.',true);
+      $('stopPreview').disabled=true;
+    }
+  });
+  frame.addEventListener('load',()=>{
+    previewReady=true;
+    if (queuedPreview && frame.contentWindow) {
+      frame.contentWindow.postMessage(queuedPreview,'*');
+      queuedPreview=null;
+    }
+  });
+  $('runPreview').onclick=startBrowserPreview;
+  $('stopPreview').onclick=()=>previewMessage('stop');
+  $('nextPreview').onclick=()=>previewMessage('next');
+  $('prevPreview').onclick=()=>previewMessage('previous');
+  $('replayPreview').onclick=()=>previewMessage('replay');
+  $('fullPreview').onclick=()=> {
+    const box=frame.parentElement;
+    if (box.requestFullscreen) box.requestFullscreen().catch(errorMessage);
+  };
+}
+
 function exportPython() {
   if (!current) return;
   const slides=current.slides.filter(s=>s.enabled!==false);
@@ -441,6 +535,7 @@ async function uploadAssets(files) {
   markDirty();renderAssets();notice('Asset(s) added. They will be included in your next ZIP export.');
 }
 async function start() {
+  wirePreview();
   db=await openDatabase();
   setupEditor=makeEditor($('setupCode'),value=>{if (current){current.setup=value;markDirty();}});
   slideEditor=makeEditor($('slideCode'),value=>{const s=currentSlide();if(s){s.code=value;markDirty();}});
