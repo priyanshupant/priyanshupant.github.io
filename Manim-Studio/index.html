@@ -109,7 +109,7 @@ self.play(Create(curve))</pre>
       <div class="pane-resizer" id="paneResizer" role="separator" aria-orientation="vertical" tabindex="0" aria-label="Resize editor and preview panes"></div>
       <section class="output-pane">
         <div class="output-toolbar"><span>Preview</span><div class="output-controls"><button id="previousStep" title="Previous step" disabled>⏮</button><button id="playStep" title="Replay" disabled>▶</button><button id="nextStep" title="Next step" disabled>⏭</button><button id="fullscreen" title="Fullscreen preview" disabled>⛶</button></div></div>
-        <div class="preview-stage" id="previewStage"><iframe id="previewFrame" title="Manim animation preview" sandbox="allow-scripts" referrerpolicy="no-referrer" loading="lazy" src="./preview-frame.html"></iframe></div>
+        <div class="preview-stage" id="previewStage"><iframe id="previewFrame" title="Manim animation preview" sandbox="allow-scripts" referrerpolicy="no-referrer" loading="lazy" src="./preview-frame.html"></iframe><video id="nativeVideo" playsinline aria-label="Compiled Manim Slides video" hidden></video></div>
         <div class="preview-info"><span id="previewStatus" role="status">Compile to see your animation here.</span><span class="preview-experiment">Experimental Wanim preview</span></div>
         <div class="output-bottom"><div class="output-tabs"><button id="logsTab" class="active">Logs and output</button><button id="infoTab">Project info</button></div><pre id="outputLog" class="output-log" aria-live="polite">Ready. Browser preview supports a subset of Manim Community. Exact native Manim rendering is not yet connected.</pre><div id="projectInfo" class="project-info" hidden></div></div>
       </section>
