@@ -93,7 +93,7 @@ self.play(Create(curve))</pre>
     </header>
     <div class="editor-toolbar">
       <div class="toolbar-left"><span class="toolbar-caption">Source Editor</span><button id="addSlide" class="toolbar-button">+ New Slide</button><button id="uploadAsset" class="toolbar-button">↑ Upload</button></div>
-      <div class="toolbar-right"><span id="renderMode" class="render-mode">Browser preview</span><button id="compile" class="green-button compile-button">▶ Recompile</button><button id="stopRender" class="toolbar-button" disabled>Stop</button><button id="downloadPython" class="toolbar-button" title="Download scene.py">↓ Python</button><button id="exportZip" class="toolbar-button">↓ Project ZIP</button><button id="present" class="toolbar-button">▣ Present</button></div>
+      <div class="toolbar-right"><span id="renderMode" class="render-mode">Browser preview</span><button id="compile" class="green-button compile-button">▶ Recompile</button><button id="compileSelected" class="toolbar-button" title="Compile enabled slides through this slide">Compile selected</button><button id="stopRender" class="toolbar-button" disabled>Stop</button><button id="downloadPython" class="toolbar-button" title="Download scene.py">↓ Python</button><button id="exportZip" class="toolbar-button">↓ Project ZIP</button><button id="present" class="toolbar-button">▣ Present</button></div>
     </div>
     <div class="editor-main">
       <aside class="file-sidebar">
@@ -110,7 +110,7 @@ self.play(Create(curve))</pre>
       <section class="output-pane">
         <div class="output-toolbar"><span>Preview</span><div class="output-controls"><button id="previousStep" title="Previous step" disabled>⏮</button><button id="playStep" title="Replay" disabled>▶</button><button id="nextStep" title="Next step" disabled>⏭</button><button id="fullscreen" title="Fullscreen preview" disabled>⛶</button></div></div>
         <div class="preview-stage" id="previewStage"><iframe id="previewFrame" title="Manim animation preview" sandbox="allow-scripts" referrerpolicy="no-referrer" loading="lazy" src="./preview-frame.html"></iframe><video id="nativeVideo" playsinline aria-label="Compiled Manim Slides video" hidden></video></div>
-        <div class="preview-info"><span id="previewStatus" role="status">Compile to see your animation here.</span><span class="preview-experiment">Experimental Wanim preview</span></div>
+        <div class="preview-info"><span id="previewStatus" role="status">Compile to see your animation here.</span><span class="preview-experiment" id="previewEngineLabel">Experimental Wanim preview</span></div>
         <div class="output-bottom"><div class="output-tabs"><button id="logsTab" class="active">Logs and output</button><button id="infoTab">Project info</button></div><pre id="outputLog" class="output-log" aria-live="polite">Ready. Browser preview supports a subset of Manim Community. Exact native Manim rendering is not yet connected.</pre><div id="projectInfo" class="project-info" hidden></div></div>
       </section>
     </div>

@@ -167,3 +167,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,[t
 .preview-stage video{display:block;width:min(100%,calc((100vh - 310px)*1.777));max-height:100%;aspect-ratio:16/9;background:#0c1015;object-fit:contain;box-shadow:0 6px 26px #0006}
 .preview-stage video[hidden]{display:none}
 .preview-stage:fullscreen video{width:100%;height:100%;max-height:100%;aspect-ratio:auto}
+
+.file-tree .asset-entry{display:flex;align-items:center;gap:2px;padding-right:4px}
+.file-tree .asset-entry>button:first-child{flex:1;min-width:0}
+.file-tree .asset-entry .remove-asset{flex:0 0 27px;width:27px;color:#96a2a8;padding:7px 4px;text-align:center}
+.file-tree .asset-entry .remove-asset:hover{background:#ffeded;color:#aa3434}
