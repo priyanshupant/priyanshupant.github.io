@@ -22,13 +22,9 @@ a:focus-visible { outline: 2px solid #2563a6; outline-offset: 3px; }
 .topbar nav a:hover,.topbar nav a[aria-current="page"] { color: #c62828; }
 
 .home-layout {
-  width: min(1160px,calc(100% - 52px)); margin: 24px auto 75px;
-  display: grid; grid-template-columns: minmax(0,1fr) 260px;
-  column-gap: 70px; align-items: start;
+  width: min(850px,calc(100% - 52px)); margin: 24px auto 75px;
 }
 .home-main { padding-top: 26px; }
-.home-photo { margin: 26px 0 0; width: 260px; max-width: 100%; }
-.home-photo img { display: block; width: 100%; height: auto; border-radius: 10px; }
 .home-main h1,.home-main h2,.home-main h3 { font-weight: 300; }
 main { min-width: 0; }
 h1,h2,h3 { font-family: "Lato",Arial,Helvetica,sans-serif; font-weight: 700; }
@@ -61,8 +57,6 @@ li { margin: 0 0 9px; }
 .page-publications li { margin-bottom: 22px; }
 @media (max-width: 850px) {
   .personal-columns { grid-template-columns:1fr; gap:34px; }
-  .home-layout { column-gap: 28px; grid-template-columns: minmax(0,1fr) 220px; }
-  .home-photo { width: 220px; }
   .topbar nav { gap: 25px; }
   .topbar nav a { font-size: 19.5px; }
 }
@@ -71,9 +65,8 @@ li { margin: 0 0 9px; }
   .topbar { height: auto; min-height: 55px; padding: 8px 16px; flex-wrap: wrap; gap: 6px 14px; }
   .topbar .site-name { font-size: 23px; }
   .topbar nav { order: 2; width: 100%; margin: 0; flex-wrap: wrap; gap: 8px 18px; }
-  .home-layout { display: flex; flex-direction: column; width: auto; margin: 23px 19px 65px; }
-  .home-photo { order: -1; width: min(260px,100%); margin: 0 0 22px; }
-  .home-main { padding-top: 0; }
+  .home-layout { width: auto; margin: 23px 19px 65px; }
+  .home-main { padding-top: 25px; }
   .page-main { width: auto; margin: 30px 19px 65px; }
   h1 { font-size: 22px; }
   h2 { font-size: 19px; }
@@ -106,7 +99,6 @@ li { margin: 0 0 9px; }
 {{ content }}
 
 </main>
-<figure class="home-photo"><img src="/home-talk-photo.svg" alt="Giving a presentation on determinants and permanents at IIT Indore" width="260" height="251" decoding="async"></figure>
 </div>
 {% else %}
 <main class="page-main page-{{ page.page_key }}">
