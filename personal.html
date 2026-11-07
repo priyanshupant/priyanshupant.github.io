@@ -30,25 +30,25 @@ page_key: personal
   <h2>Some books I like.</h2>
   <style>
     .page-personal .personal-books h2 { margin: 0 0 14px; font-family: "Lato",Arial,Helvetica,sans-serif; font-size: 1em; line-height: 1.4; font-weight: 300; }
-    .page-personal .books-gallery-clean { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; column-gap: 16px; row-gap: 28px; margin: -12px 0 0; }
-    .page-personal .books-gallery-clean a { display: block; flex: 0 0 204px; box-sizing: border-box; width: 204px; height: 288px; overflow: hidden; text-decoration: none; }
-    .page-personal .books-gallery-clean a:nth-child(2) { flex-basis: 136px; width: 136px; height: 192px; }
-    .page-personal .books-gallery-clean a img { display: block !important; box-sizing: border-box !important; width: 100% !important; height: 100% !important; max-width: 100% !important; max-height: 100% !important; object-fit: contain !important; object-position: center center !important; border-radius: 0 !important; }
+    .page-personal .books-gallery-clean { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; column-gap: 16px; row-gap: 24px; margin: 0; }
+    .page-personal .books-gallery-clean a { display: block; flex: 0 0 auto; width: auto; height: auto; line-height: 0; text-decoration: none; }
+    .page-personal .books-gallery-clean a img { display: block !important; box-sizing: border-box !important; width: auto !important; height: 288px !important; max-width: none !important; max-height: none !important; object-fit: unset !important; border-radius: 0 !important; }
+    .page-personal .books-gallery-clean a:nth-child(2) img { height: 192px !important; }
     @media (max-width: 720px) {
       .page-personal .books-gallery-clean { column-gap: 9px; }
-      .page-personal .books-gallery-clean a { flex-basis: 180px; width: 180px; height: 264px; }
-      .page-personal .books-gallery-clean a:nth-child(2) { flex-basis: 120px; width: 120px; height: 176px; }
+      .page-personal .books-gallery-clean a img { height: 264px !important; }
+      .page-personal .books-gallery-clean a:nth-child(2) img { height: 176px !important; }
     }
   </style>
   <div class="books-gallery-clean">
     <a href="https://openlibrary.org/books/OL24295528M/The_Housekeeper_and_the_Professor" target="_blank" rel="noopener noreferrer" aria-label="The Housekeeper and the Professor by Yoko Ogawa" title="The Housekeeper and the Professor by Yoko Ogawa">
-      <img src="https://shop.cziplee.com/cdn/shop/files/11811887.jpg?crop=center&amp;height=1200&amp;v=1727322433&amp;width=1200" onerror="this.onerror=null;this.src='/media/book-housekeeper.svg'" alt="The Housekeeper and the Professor by Yoko Ogawa book cover" loading="lazy" width="170" height="240">
+      <img src="https://shop.cziplee.com/cdn/shop/files/11811887.jpg?crop=center&amp;height=1200&amp;v=1727322433&amp;width=1200" onerror="this.onerror=null;this.src='/media/book-housekeeper.svg'" alt="The Housekeeper and the Professor by Yoko Ogawa book cover" loading="lazy">
     </a>
     <a href="https://openlibrary.org/books/OL39510390M/It%27s_Not_You_It%27s_Biology" target="_blank" rel="noopener noreferrer" aria-label="It&#39;s Not You, It&#39;s Biology by Joe Quirk" title="It&#39;s Not You, It&#39;s Biology by Joe Quirk">
-      <img src="/media/book-biology.svg" alt="It&#39;s Not You, It&#39;s Biology by Joe Quirk book cover" loading="lazy" width="170" height="240">
+      <img src="/media/book-biology.svg" alt="It&#39;s Not You, It&#39;s Biology by Joe Quirk book cover" loading="lazy">
     </a>
     <a href="https://openlibrary.org/books/OL7770235M/Notes_from_Underground" target="_blank" rel="noopener noreferrer" aria-label="Notes from Underground by Fyodor Dostoevsky" title="Notes from Underground by Fyodor Dostoevsky">
-      <img src="https://bizweb.dktcdn.net/thumb/1024x1024/100/431/180/products/untitled-design-5-1698245798050.png" onerror="this.onerror=null;this.src='/media/book-underground.svg'" alt="Notes from Underground by Fyodor Dostoevsky book cover" loading="lazy" width="170" height="240">
+      <img src="https://bizweb.dktcdn.net/thumb/1024x1024/100/431/180/products/untitled-design-5-1698245798050.png" onerror="this.onerror=null;this.src='/media/book-underground.svg'" alt="Notes from Underground by Fyodor Dostoevsky book cover" loading="lazy">
     </a>
   </div>
 </section>
