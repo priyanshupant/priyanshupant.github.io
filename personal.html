@@ -28,9 +28,25 @@ page_key: personal
 
 <section class="personal-books">
   <h2>Some books I like.</h2>
-  <div class="personal-book-gallery" style="display:flex!important; flex-wrap:wrap!important; align-items:flex-start!important; justify-content:flex-start!important; gap:30px!important; margin-top:20px!important;">
-    <a class="personal-book-cover" href="https://openlibrary.org/books/OL24295528M/The_Housekeeper_and_the_Professor" target="_blank" rel="noopener noreferrer" aria-label="The Housekeeper and the Professor by Yoko Ogawa" title="The Housekeeper and the Professor by Yoko Ogawa" style="display:block!important; flex:0 0 165px!important; width:165px!important; min-width:165px!important; max-width:165px!important; height:250px!important; min-height:250px!important; max-height:250px!important; overflow:hidden!important; background-image:url('https://shop.cziplee.com/cdn/shop/files/11811887.jpg?crop=center&amp;height=1200&amp;v=1727322433&amp;width=1200'),url('/media/book-housekeeper.svg'); background-position:center top!important; background-size:contain!important; background-repeat:no-repeat!important;"></a>
-    <a class="personal-book-cover" href="https://openlibrary.org/books/OL39510390M/It%27s_Not_You_It%27s_Biology" target="_blank" rel="noopener noreferrer" aria-label="It&#39;s Not You, It&#39;s Biology by Joe Quirk" title="It&#39;s Not You, It&#39;s Biology by Joe Quirk" style="display:block!important; flex:0 0 165px!important; width:165px!important; min-width:165px!important; max-width:165px!important; height:250px!important; min-height:250px!important; max-height:250px!important; overflow:hidden!important; background-image:url('/media/book-biology.svg'); background-position:center top!important; background-size:contain!important; background-repeat:no-repeat!important;"></a>
-    <a class="personal-book-cover" href="https://openlibrary.org/books/OL7770235M/Notes_from_Underground" target="_blank" rel="noopener noreferrer" aria-label="Notes from Underground by Fyodor Dostoevsky" title="Notes from Underground by Fyodor Dostoevsky" style="display:block!important; flex:0 0 165px!important; width:165px!important; min-width:165px!important; max-width:165px!important; height:250px!important; min-height:250px!important; max-height:250px!important; overflow:hidden!important; background-image:url('https://bizweb.dktcdn.net/thumb/1024x1024/100/431/180/products/untitled-design-5-1698245798050.png'),url('/media/book-underground.svg'); background-position:center top!important; background-size:contain!important; background-repeat:no-repeat!important;"></a>
+  <style>
+    .page-personal .books-gallery-clean { display: grid; grid-template-columns: repeat(3, 170px); column-gap: 32px; row-gap: 28px; margin: 20px 0 0; justify-content: start; align-items: start; }
+    .page-personal .books-gallery-clean a { display: block; box-sizing: border-box; width: 170px; height: 240px; overflow: hidden; text-decoration: none; }
+    .page-personal .books-gallery-clean a img { display: block !important; box-sizing: border-box !important; width: 170px !important; height: 240px !important; max-width: 170px !important; max-height: 240px !important; object-fit: contain !important; object-position: center center !important; border-radius: 0 !important; }
+    @media (max-width: 720px) {
+      .page-personal .books-gallery-clean { grid-template-columns: repeat(auto-fit, 150px); column-gap: 18px; }
+      .page-personal .books-gallery-clean a { width: 150px; height: 220px; }
+      .page-personal .books-gallery-clean a img { width: 150px !important; height: 220px !important; max-width: 150px !important; max-height: 220px !important; }
+    }
+  </style>
+  <div class="books-gallery-clean">
+    <a href="https://openlibrary.org/books/OL24295528M/The_Housekeeper_and_the_Professor" target="_blank" rel="noopener noreferrer" aria-label="The Housekeeper and the Professor by Yoko Ogawa" title="The Housekeeper and the Professor by Yoko Ogawa">
+      <img src="https://shop.cziplee.com/cdn/shop/files/11811887.jpg?crop=center&amp;height=1200&amp;v=1727322433&amp;width=1200" onerror="this.onerror=null;this.src='/media/book-housekeeper.svg'" alt="The Housekeeper and the Professor by Yoko Ogawa book cover" loading="lazy" width="170" height="240">
+    </a>
+    <a href="https://openlibrary.org/books/OL39510390M/It%27s_Not_You_It%27s_Biology" target="_blank" rel="noopener noreferrer" aria-label="It&#39;s Not You, It&#39;s Biology by Joe Quirk" title="It&#39;s Not You, It&#39;s Biology by Joe Quirk">
+      <img src="/media/book-biology.svg" alt="It&#39;s Not You, It&#39;s Biology by Joe Quirk book cover" loading="lazy" width="170" height="240">
+    </a>
+    <a href="https://openlibrary.org/books/OL7770235M/Notes_from_Underground" target="_blank" rel="noopener noreferrer" aria-label="Notes from Underground by Fyodor Dostoevsky" title="Notes from Underground by Fyodor Dostoevsky">
+      <img src="https://bizweb.dktcdn.net/thumb/1024x1024/100/431/180/products/untitled-design-5-1698245798050.png" onerror="this.onerror=null;this.src='/media/book-underground.svg'" alt="Notes from Underground by Fyodor Dostoevsky book cover" loading="lazy" width="170" height="240">
+    </a>
   </div>
 </section>
