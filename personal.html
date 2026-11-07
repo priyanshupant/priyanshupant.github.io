@@ -29,13 +29,14 @@ page_key: personal
 <section class="personal-books">
   <h2>Some books I like.</h2>
   <style>
-    .page-personal .books-gallery-clean { display: grid; grid-template-columns: repeat(3, 170px); column-gap: 32px; row-gap: 28px; margin: 20px 0 0; justify-content: start; align-items: start; }
-    .page-personal .books-gallery-clean a { display: block; box-sizing: border-box; width: 170px; height: 240px; overflow: hidden; text-decoration: none; }
-    .page-personal .books-gallery-clean a img { display: block !important; box-sizing: border-box !important; width: 170px !important; height: 240px !important; max-width: 170px !important; max-height: 240px !important; object-fit: contain !important; object-position: center center !important; border-radius: 0 !important; }
+    .page-personal .books-gallery-clean { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; column-gap: 32px; row-gap: 28px; margin: 20px 0 0; }
+    .page-personal .books-gallery-clean a { display: block; flex: 0 0 204px; box-sizing: border-box; width: 204px; height: 288px; overflow: hidden; text-decoration: none; }
+    .page-personal .books-gallery-clean a:nth-child(2) { flex-basis: 136px; width: 136px; height: 192px; }
+    .page-personal .books-gallery-clean a img { display: block !important; box-sizing: border-box !important; width: 100% !important; height: 100% !important; max-width: 100% !important; max-height: 100% !important; object-fit: contain !important; object-position: center center !important; border-radius: 0 !important; }
     @media (max-width: 720px) {
-      .page-personal .books-gallery-clean { grid-template-columns: repeat(auto-fit, 150px); column-gap: 18px; }
-      .page-personal .books-gallery-clean a { width: 150px; height: 220px; }
-      .page-personal .books-gallery-clean a img { width: 150px !important; height: 220px !important; max-width: 150px !important; max-height: 220px !important; }
+      .page-personal .books-gallery-clean { column-gap: 18px; }
+      .page-personal .books-gallery-clean a { flex-basis: 180px; width: 180px; height: 264px; }
+      .page-personal .books-gallery-clean a:nth-child(2) { flex-basis: 120px; width: 120px; height: 176px; }
     }
   </style>
   <div class="books-gallery-clean">
