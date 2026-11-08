@@ -64,7 +64,6 @@ li { margin: 0 0 9px; }
   background: rgba(255,255,255,.96); padding: 5px 9px;
   color: #777; font: 400 12px/1.4 "Lato",Arial,Helvetica,sans-serif;
   box-shadow: 0 1px 3px rgba(0,0,0,.035);
-  pointer-events: none;
 }
 .visitor-number strong { color: #c62828; font-weight: 700; }
 .visitor-number[hidden] { display: none !important; }
@@ -122,34 +121,33 @@ li { margin: 0 0 9px; }
 </main>
 {% endif %}
 
-{% if page.page_key == 'home' %}
-<div id="visitor-number" class="visitor-number" role="status" aria-live="polite" hidden>
-  You are visitor no. <strong id="visitor-number-count"></strong>
+<div id="visitor-number" class="visitor-number" role="status" aria-live="polite">
+  You are visitor no. <strong id="visitor-number-count">…</strong>
 </div>
 <script>
 (function() {
   var label = document.getElementById('visitor-number');
   var count = document.getElementById('visitor-number-count');
   if (!label || !count) return;
-  // GoatCounter's site-wide total (a visit count, not a unique-person ranking).
+  // GoatCounter's site-wide visits total; it is not a unique visitor ID.
   fetch('https://priyanshupant.goatcounter.com/counter/TOTAL.json')
     .then(function(response) {
-      if (!response.ok) throw new Error('Visitor count unavailable');
+      if (!response.ok) throw new Error('Public visitor counts are not enabled');
       return response.json();
     })
     .then(function(data) {
       var value = data && data.count;
       if ((typeof value !== 'string' && typeof value !== 'number') ||
-          !/^[0-9, .]+$/.test(String(value)) || !String(value).trim()) return;
+          !String(value).trim()) throw new Error('No visitor count returned');
       count.textContent = String(value);
-      label.hidden = false;
     })
     .catch(function() {
-      // Keep the label hidden until public visitor counts are enabled.
+      // Keep the counter visible even if its public endpoint is disabled or blocked.
+      label.textContent = 'Visitor count unavailable';
+      label.title = 'Enable public visitor counts in GoatCounter site settings.';
     });
 })();
 </script>
-{% endif %}
 
 <script data-goatcounter="https://priyanshupant.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
