@@ -56,6 +56,21 @@ li { margin: 0 0 9px; }
 .page-publications a[href*="stacs2026.imag.fr"],
 .page-publications a[href*="cocoon2026"] { color: #c62828; }
 .page-publications li { margin-bottom: 22px; }
+
+/* Subtle, fixed site-wide visit-number label on the homepage. */
+.visitor-number {
+  position: fixed; right: 16px; bottom: 14px; z-index: 20;
+  border: 1px solid #e8e8e8; border-radius: 6px;
+  background: rgba(255,255,255,.96); padding: 5px 9px;
+  color: #777; font: 400 12px/1.4 "Lato",Arial,Helvetica,sans-serif;
+  box-shadow: 0 1px 3px rgba(0,0,0,.035);
+  pointer-events: none;
+}
+.visitor-number strong { color: #c62828; font-weight: 700; }
+.visitor-number[hidden] { display: none !important; }
+@media (max-width: 660px) {
+  .visitor-number { right: 10px; bottom: 10px; font-size: 11px; }
+}
 @media (max-width: 850px) {
   .personal-columns { grid-template-columns:1fr; gap:34px; }
   .topbar nav { gap: 25px; }
@@ -105,6 +120,35 @@ li { margin: 0 0 9px; }
 <main class="page-main page-{{ page.page_key }}">
 {{ content }}
 </main>
+{% endif %}
+
+{% if page.page_key == 'home' %}
+<div id="visitor-number" class="visitor-number" role="status" aria-live="polite" hidden>
+  You are visitor no. <strong id="visitor-number-count"></strong>
+</div>
+<script>
+(function() {
+  var label = document.getElementById('visitor-number');
+  var count = document.getElementById('visitor-number-count');
+  if (!label || !count) return;
+  // GoatCounter's site-wide total (a visit count, not a unique-person ranking).
+  fetch('https://priyanshupant.goatcounter.com/counter/TOTAL.json')
+    .then(function(response) {
+      if (!response.ok) throw new Error('Visitor count unavailable');
+      return response.json();
+    })
+    .then(function(data) {
+      var value = data && data.count;
+      if ((typeof value !== 'string' && typeof value !== 'number') ||
+          !/^[0-9, .]+$/.test(String(value)) || !String(value).trim()) return;
+      count.textContent = String(value);
+      label.hidden = false;
+    })
+    .catch(function() {
+      // Keep the label hidden until public visitor counts are enabled.
+    });
+})();
+</script>
 {% endif %}
 
 <script data-goatcounter="https://priyanshupant.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
