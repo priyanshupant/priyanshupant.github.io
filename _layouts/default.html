@@ -121,8 +121,8 @@ li { margin: 0 0 9px; }
 </main>
 {% endif %}
 
-<div id="visitor-number" class="visitor-number" role="status" aria-live="polite">
-  You are visitor no. <strong id="visitor-number-count">…</strong>
+<div id="visitor-number" class="visitor-number" role="status" aria-live="polite" hidden>
+  You are visitor no. <strong id="visitor-number-count"></strong>
 </div>
 <script>
 (function() {
@@ -140,11 +140,11 @@ li { margin: 0 0 9px; }
       if ((typeof value !== 'string' && typeof value !== 'number') ||
           !String(value).trim()) throw new Error('No visitor count returned');
       count.textContent = String(value);
+      label.hidden = false;
     })
     .catch(function() {
-      // Keep the counter visible even if its public endpoint is disabled or blocked.
-      label.textContent = 'Visitor count unavailable';
-      label.title = 'Enable public visitor counts in GoatCounter site settings.';
+      // Do not show a broken counter to visitors while GoatCounter access is disabled.
+      label.hidden = true;
     });
 })();
 </script>
